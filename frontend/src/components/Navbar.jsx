@@ -1,0 +1,249 @@
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Search, Heart, ShoppingBasket, User, LogOut, Menu, X } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+
+export default function Navbar() {
+  const { user, logout } = useAuth();
+  const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setProfileDropdownOpen(false);
+    navigate('/');
+  };
+
+  return (
+    <nav className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-neutral-100 shadow-sm transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          
+          {/* Logo */}
+          <Link to="/" className="flex items-center flex-shrink-0 gap-2">
+            <span className="font-outfit font-extrabold text-2xl tracking-tight text-primary flex items-center">
+              Quick<span className="text-primary-darker">cart</span>
+            </span>
+          </Link>
+
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex space-x-8 items-center text-sm font-semibold text-neutral-600">
+            <Link 
+              to="/shop" 
+              className={`hover:text-primary transition-colors py-2 ${
+                location.pathname === '/shop' ? 'text-primary border-b-2 border-primary' : ''
+              }`}
+            >
+              Shop
+            </Link>
+            <Link 
+              to="/shop?category=Fruits%20%26%20Vegetables" 
+              className="hover:text-primary transition-colors py-2"
+            >
+              Organic
+            </Link>
+            <Link 
+              to="/shop?tag=Seasonal%20Pick" 
+              className="hover:text-primary transition-colors py-2"
+            >
+              Recipes
+            </Link>
+            <Link 
+              to="/shop?tag=Bestseller" 
+              className="hover:text-primary transition-colors py-2"
+            >
+              Weekly Deals
+            </Link>
+          </div>
+
+          {/* Search bar */}
+          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-grow max-w-md mx-6 relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search fresh food..."
+              className="w-full pl-4 pr-10 py-2.5 bg-neutral-100 focus:bg-white text-sm text-neutral-800 rounded-full border border-transparent focus:border-primary/30 outline-none transition-all duration-200"
+            />
+            <button type="submit" className="absolute right-3.5 top-3 text-neutral-400 hover:text-primary transition-colors">
+              <Search size={18} />
+            </button>
+          </form>
+
+          {/* User actions */}
+          <div className="hidden md:flex items-center gap-5">
+            {/* Wishlist */}
+            <Link 
+              to="/wishlist" 
+              className="relative p-2 text-neutral-500 hover:text-primary hover:bg-primary-light/35 rounded-full transition-all duration-200"
+            >
+              <Heart size={22} />
+              {wishlistCount > 0 && (
+                <span className="absolute top-0 right-0 bg-accent text-white font-semibold text-[10px] w-5 h-5 flex items-center justify-center rounded-full scale-90 border-2 border-white animate-pulse">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Cart */}
+            <Link 
+              to="/cart" 
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-sm shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <ShoppingBasket size={18} />
+              <span>Basket ({cartCount})</span>
+            </Link>
+
+            {/* User Profile */}
+            <div className="relative">
+              {user ? (
+                <>
+                  <button 
+                    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                    className="flex items-center gap-2 p-1 border border-neutral-200 rounded-full hover:border-primary/40 focus:outline-none transition-colors"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-primary-light text-primary font-bold flex items-center justify-center text-sm">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                  </button>
+                  
+                  {profileDropdownOpen && (
+                    <div className="absolute right-0 mt-3 w-48 bg-white border border-neutral-100 rounded-2xl shadow-xl py-2 z-50 fade-in">
+                      <div className="px-4 py-2 text-xs font-semibold text-neutral-400 border-b border-neutral-50 uppercase tracking-wider">
+                        My Account
+                      </div>
+                      <Link 
+                        to="/profile" 
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+                      >
+                        <User size={16} />
+                        Profile & Orders
+                      </Link>
+                      <button 
+                        onClick={handleLogout}
+                        className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 text-left transition-colors"
+                      >
+                        <LogOut size={16} />
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link 
+                  to="/login" 
+                  className="p-2 text-neutral-500 hover:text-primary hover:bg-primary-light/35 rounded-full flex items-center transition-all duration-200"
+                >
+                  <User size={22} />
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex md:hidden items-center gap-3">
+            <Link to="/cart" className="relative p-2 text-neutral-500">
+              <ShoppingBasket size={22} />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-accent text-white font-semibold text-[10px] w-5 h-5 flex items-center justify-center rounded-full scale-90 border-2 border-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            
+            <button 
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="p-2 text-neutral-600 hover:text-primary focus:outline-none"
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {menuOpen && (
+        <div className="md:hidden border-t border-neutral-100 bg-white px-4 py-4 space-y-3 shadow-inner fade-in">
+          <form onSubmit={handleSearchSubmit} className="relative w-full mb-4">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search fresh food..."
+              className="w-full pl-4 pr-10 py-2.5 bg-neutral-100 text-sm text-neutral-800 rounded-full border border-transparent outline-none"
+            />
+            <button type="submit" className="absolute right-3.5 top-3 text-neutral-400">
+              <Search size={18} />
+            </button>
+          </form>
+
+          <Link 
+            to="/shop" 
+            onClick={() => setMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-neutral-700 hover:text-primary"
+          >
+            Shop All
+          </Link>
+          <Link 
+            to="/shop?category=Fruits%20%26%20Vegetables" 
+            onClick={() => setMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-neutral-700 hover:text-primary"
+          >
+            Organic Produce
+          </Link>
+          <Link 
+            to="/wishlist" 
+            onClick={() => setMenuOpen(false)}
+            className="block px-3 py-2 text-base font-semibold text-neutral-700 hover:text-primary flex justify-between items-center"
+          >
+            <span>Wishlist</span>
+            {wishlistCount > 0 && <span className="bg-primary-light text-primary px-2.5 py-0.5 rounded-full text-xs font-bold">{wishlistCount}</span>}
+          </Link>
+          
+          {user ? (
+            <>
+              <Link 
+                to="/profile" 
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 text-base font-semibold text-neutral-700 hover:text-primary"
+              >
+                My Profile & Orders
+              </Link>
+              <button 
+                onClick={handleLogout}
+                className="block w-full text-left px-3 py-2 text-base font-semibold text-red-600 hover:text-red-700"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <Link 
+              to="/login" 
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 text-base font-semibold text-primary hover:underline"
+            >
+              Sign In / Register
+            </Link>
+          )}
+        </div>
+      )}
+    </nav>
+  );
+}

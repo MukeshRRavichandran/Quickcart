@@ -1,0 +1,14 @@
+{
+  "name": "harvestfresh-monorepo",
+  "version": "1.0.0",
+  "scripts": {
+    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently \"npm run server --prefix backend\" \"npm run client --prefix frontend\"",
+    "server": "npm run server --prefix backend",
+    "seed": "npm run seed --prefix backend",
+    "build": "npm run build --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
