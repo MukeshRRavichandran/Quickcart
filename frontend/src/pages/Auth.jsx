@@ -9,7 +9,7 @@ export default function Auth() {
   const { login, register } = useAuth();
   
   const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState('customer'); // 'customer' or 'seller'
+  const [role, setRole] = useState('seller'); // default to seller portal
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -144,36 +144,12 @@ export default function Auth() {
       {/* Form Card */}
       <div className="bg-white border border-neutral-100 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 text-left">
         
-        {/* Account Type Switcher */}
-        <div className="flex border-b border-neutral-100 pb-1">
-          <button
-            type="button"
-            onClick={() => {
-              setRole('customer');
-              setError('');
-            }}
-            className={`flex-1 pb-2.5 text-xs font-bold transition-all border-b-2 ${
-              role === 'customer'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-neutral-400 hover:text-neutral-600'
-            }`}
-          >
-            Customer
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setRole('seller');
-              setError('');
-            }}
-            className={`flex-1 pb-2.5 text-xs font-bold transition-all border-b-2 ${
-              role === 'seller'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-neutral-400 hover:text-neutral-600'
-            }`}
-          >
-            Seller Merchant
-          </button>
+        {/* Title Header Badge */}
+        <div className="text-center border-b border-neutral-50 pb-3 flex items-center justify-center gap-1.5 font-outfit">
+          <Store size={15} className="text-primary" />
+          <span className="text-xs font-extrabold text-neutral-700 uppercase tracking-wider">
+            Seller Portal
+          </span>
         </div>
 
         {role === 'seller' && !isLogin ? (
