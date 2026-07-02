@@ -176,92 +176,94 @@ export default function Auth() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-neutral-600">
-          
-          {/* Name (Registration Only) */}
-          {!isLogin && (
+        {role === 'seller' && !isLogin ? (
+          <div className="text-center space-y-5 py-4 fade-in font-outfit">
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+              <Store size={26} />
+            </div>
+            <div className="space-y-1.5">
+              <h3 className="font-outfit font-extrabold text-neutral-800 text-sm">Seller Partner Center</h3>
+              <p className="text-[10px] text-neutral-400 font-semibold leading-relaxed px-4">
+                To start selling on QuickCart, please register using our high-fidelity, multi-step merchant onboarding application.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/seller-register')}
+              className="w-full py-3.5 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold text-xs shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-1.5 transition-all duration-200"
+            >
+              Start Onboarding Form <ArrowRight size={14} />
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4 text-xs font-semibold text-neutral-600">
+            
+            {/* Name (Registration Only) */}
+            {!isLogin && (
+              <div className="space-y-1">
+                <label>Full Name</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required={!isLogin}
+                    placeholder="John Doe"
+                    className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all font-semibold"
+                  />
+                  <User size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
+                </div>
+              </div>
+            )}
+
+            {/* Email */}
             <div className="space-y-1">
-              <label>Full Name</label>
+              <label>Email Address</label>
               <div className="relative">
                 <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
-                  required={!isLogin}
-                  placeholder="John Doe"
-                  className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all font-semibold"
+                  required
+                  placeholder="john.doe@example.com"
+                  className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all font-semibold text-neutral-700"
                 />
-                <User size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
+                <Mail size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
               </div>
             </div>
-          )}
 
-          {/* Store Brand Name (Registration Only & Seller Only) */}
-          {!isLogin && role === 'seller' && (
+            {/* Password */}
             <div className="space-y-1">
-              <label>Store Brand Name</label>
+              <label>Password</label>
               <div className="relative">
                 <input
-                  type="text"
-                  name="storeName"
-                  value={formData.storeName}
+                  type="password"
+                  name="password"
+                  value={formData.password}
                   onChange={handleChange}
-                  required={!isLogin && role === 'seller'}
-                  placeholder="e.g. VeggieMart"
-                  className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all font-semibold"
+                  required
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all text-neutral-700 font-semibold"
                 />
-                <Store size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
+                <Lock size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
               </div>
             </div>
-          )}
 
-          {/* Email */}
-          <div className="space-y-1">
-            <label>Email Address</label>
-            <div className="relative">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="john.doe@example.com"
-                className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all font-semibold"
-              />
-              <Mail size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
-            </div>
-          </div>
+            {error && <span className="text-[11px] text-accent font-bold block">{error}</span>}
 
-          {/* Password */}
-          <div className="space-y-1">
-            <label>Password</label>
-            <div className="relative">
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 bg-neutral-50 border border-neutral-100 rounded-xl outline-none focus:bg-white focus:border-primary/20 transition-all"
-              />
-              <Lock size={16} className="absolute left-3.5 top-3.5 text-neutral-400" />
-            </div>
-          </div>
-
-          {error && <span className="text-[11px] text-accent font-bold block">{error}</span>}
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3.5 bg-primary hover:bg-primary-dark disabled:bg-neutral-300 text-white rounded-xl font-bold text-sm shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2 transition-all duration-200"
-          >
-            {loading ? 'Authenticating...' : isLogin ? 'Sign In' : 'Create Account'}
-            <ArrowRight size={16} />
-          </button>
-        </form>
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 bg-primary hover:bg-primary-dark disabled:bg-neutral-300 text-white rounded-xl font-bold text-sm shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2 transition-all duration-200"
+            >
+              {loading ? 'Authenticating...' : isLogin ? 'Sign In' : 'Create Account'}
+              <ArrowRight size={16} />
+            </button>
+          </form>
+        )}
 
         {/* Switch mode button */}
         <div className="text-center pt-2">

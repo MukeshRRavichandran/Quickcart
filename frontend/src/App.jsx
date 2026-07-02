@@ -43,6 +43,7 @@ import ProfileStore from './pages/seller/ProfileStore';
 import SettingsPage from './pages/seller/Settings';
 import Help from './pages/seller/Help';
 import NotFound from './pages/seller/NotFound';
+import SellerRegister from './pages/seller/SellerRegister';
 
 // Protected Route Wrapper
 function ProtectedRoute({ children }) {
@@ -141,6 +142,7 @@ function AppContent() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/register" element={<Auth />} />
+          <Route path="/seller-register" element={<SellerRegister />} />
 
           {/* Protected Routes */}
           <Route path="/wishlist" element={<Wishlist />} />
