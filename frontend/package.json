@@ -1,14 +1,15 @@
 {
-  "name": "harvestfresh-frontend",
+  "name": "quickcart-frontend",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "client": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "harvestfresh-monorepo": "file:..",
+    "quickcart-monorepo": "file:..",
     "lucide-react": "^0.395.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

@@ -4,7 +4,7 @@ import { Bell, Send, CheckCircle, Trash2, Calendar, Target } from 'lucide-react'
 export default function Notifications() {
   const [broadcasts, setBroadcasts] = useState([
     { id: 'BC-01', title: 'Monsoon season shipping delay rules', recipient: 'Sellers', message: 'Due to severe monsoons, delivery buffers are temporarily extended by 15 mins.', date: '30 Jun 2026' },
-    { id: 'BC-02', title: 'Welcome to Quickcart Organic store', recipient: 'All Users', message: 'Avail flat $50.00 off on your first order using code HARVEST50.', date: '15 Jun 2026' }
+    { id: 'BC-02', title: 'Welcome to Quickcart Organic store', recipient: 'All Users', message: 'Avail flat $50.00 off on your first order using code QUICK50.', date: '15 Jun 2026' }
   ]);
 
   const [title, setTitle] = useState('');

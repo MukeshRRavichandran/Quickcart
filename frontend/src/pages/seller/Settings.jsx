@@ -114,7 +114,7 @@ export default function SettingsPage() {
                 <label className="text-[10px] font-bold text-neutral-400 uppercase block">Production Webhook Callback URL</label>
                 <input
                   type="text"
-                  value="https://api.harvestfresh.com/v1/webhooks/payouts"
+                  value="https://api.quickcart.com/v1/webhooks/payouts"
                   className="w-full px-3.5 py-2.5 bg-neutral-100 border border-transparent rounded-xl text-xs text-neutral-500 font-mono"
                   disabled
                 />

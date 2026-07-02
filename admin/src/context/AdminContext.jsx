@@ -41,7 +41,7 @@ export const AdminProvider = ({ children }) => {
 
   // Platform level coupons
   const [coupons, setCoupons] = useState([
-    { id: 'CPN-01', code: 'HARVEST50', name: 'New User Discount', type: 'Flat', value: 50, status: 'Active' },
+    { id: 'CPN-01', code: 'QUICK50', name: 'New User Discount', type: 'Flat', value: 50, status: 'Active' },
     { id: 'CPN-02', code: 'ORGANIC20', name: 'Farming Special Campaign', type: 'Percentage', value: 20, status: 'Active' }
   ]);
 

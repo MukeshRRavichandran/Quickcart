@@ -3,7 +3,7 @@ import User from '../models/user.js';
 import Cart from '../models/cart.js';
 import Wishlist from '../models/wishlist.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'harvestfreshsecret12345';
+const JWT_SECRET = process.env.JWT_SECRET || 'quickcartsecret12345';
 
 const signToken = (id) =>
   jwt.sign({ id }, JWT_SECRET, { expiresIn: '30d' });

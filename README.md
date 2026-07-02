@@ -1,6 +1,6 @@
-# HarvestFresh Customer Portal
+# Quickcart Customer Portal
 
-Welcome to Phase 1 of the HarvestFresh e-commerce suite. This is a fully production-ready, highly interactive Customer Portal built using a unified MERN stack (React, Node/Express, MongoDB). It closely implements the design layouts, color systems, spacing, and nutritional tables from the provided reference designs.
+Welcome to Phase 1 of the Quickcart e-commerce suite. This is a fully production-ready, highly interactive Customer Portal built using a unified MERN stack (React, Node/Express, MongoDB). It closely implements the design layouts, color systems, spacing, and nutritional tables from the provided reference designs.
 
 ## Technology Stack
 
@@ -39,8 +39,8 @@ npm install
 Create a `.env` file in the root directory (one has been created for you with defaults):
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/harvestfresh
-JWT_SECRET=harvestfreshsecret12345
+MONGO_URI=mongodb://localhost:27017/quickcart
+JWT_SECRET=quickcartsecret12345
 NODE_ENV=development
 ```
 

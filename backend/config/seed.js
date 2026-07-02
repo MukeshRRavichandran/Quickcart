@@ -27,7 +27,7 @@ const categories = [
 
 const coupons = [
   { code: 'FRESH20', name: 'Grand Reopening Special', type: 'Percentage', value: 20, minOrderValue: 25, status: 'Active', userLimit: 5 },
-  { code: 'HARVEST50', name: 'Super Flat Discount', type: 'Flat', value: 50, minOrderValue: 150, status: 'Active', userLimit: 2 },
+  { code: 'QUICK50', name: 'Super Flat Discount', type: 'Flat', value: 50, minOrderValue: 150, status: 'Active', userLimit: 2 },
   { code: 'ORGANIC20', name: 'Farming Special Campaign', type: 'Percentage', value: 20, minOrderValue: 30, status: 'Active', userLimit: 3 }
 ];
 
@@ -567,7 +567,7 @@ const products = [
 
 const seedDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/harvestfresh');
+    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/quickcart');
     console.log(`Connected to database for seeding: ${conn.connection.host}`);
     
     // Clear collections

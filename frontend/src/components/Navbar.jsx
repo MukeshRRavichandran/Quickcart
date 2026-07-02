@@ -34,56 +34,37 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
-          {/* Logo */}
-          <Link to="/" className="flex items-center flex-shrink-0 gap-2">
-            <span className="font-outfit font-extrabold text-2xl tracking-tight text-primary flex items-center">
-              Quick<span className="text-primary-darker">cart</span>
-            </span>
-          </Link>
+          {/* Logo & Search Bar & Seller Portal */}
+          <div className="flex items-center gap-6 flex-grow max-w-2xl">
+            {/* Logo */}
+            <Link to="/" className="flex items-center flex-shrink-0 gap-2">
+              <span className="font-outfit font-extrabold text-2xl tracking-tight text-primary flex items-center">
+                Quick<span className="text-primary-darker">cart</span>
+              </span>
+            </Link>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden lg:flex space-x-8 items-center text-sm font-semibold text-neutral-600">
+            {/* Search bar */}
+            <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-grow relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search fresh food..."
+                className="w-full pl-4 pr-10 py-2.5 bg-neutral-100 focus:bg-white text-sm text-neutral-800 rounded-full border border-transparent focus:border-primary/30 outline-none transition-all duration-200"
+              />
+              <button type="submit" className="absolute right-3.5 top-3 text-neutral-400 hover:text-primary transition-colors">
+                <Search size={18} />
+              </button>
+            </form>
+
+            {/* Seller Portal Link */}
             <Link 
-              to="/shop" 
-              className={`hover:text-primary transition-colors py-2 ${
-                location.pathname === '/shop' ? 'text-primary border-b-2 border-primary' : ''
-              }`}
+              to="/seller/dashboard"
+              className="hidden md:inline-flex items-center px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-full transition-colors whitespace-nowrap"
             >
-              Shop
-            </Link>
-            <Link 
-              to="/shop?category=Fruits%20%26%20Vegetables" 
-              className="hover:text-primary transition-colors py-2"
-            >
-              Organic
-            </Link>
-            <Link 
-              to="/shop?tag=Seasonal%20Pick" 
-              className="hover:text-primary transition-colors py-2"
-            >
-              Recipes
-            </Link>
-            <Link 
-              to="/shop?tag=Bestseller" 
-              className="hover:text-primary transition-colors py-2"
-            >
-              Weekly Deals
+              Seller Portal
             </Link>
           </div>
-
-          {/* Search bar */}
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-grow max-w-md mx-6 relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search fresh food..."
-              className="w-full pl-4 pr-10 py-2.5 bg-neutral-100 focus:bg-white text-sm text-neutral-800 rounded-full border border-transparent focus:border-primary/30 outline-none transition-all duration-200"
-            />
-            <button type="submit" className="absolute right-3.5 top-3 text-neutral-400 hover:text-primary transition-colors">
-              <Search size={18} />
-            </button>
-          </form>
 
           {/* User actions */}
           <div className="hidden md:flex items-center gap-5">
@@ -194,20 +175,7 @@ export default function Navbar() {
             </button>
           </form>
 
-          <Link 
-            to="/shop" 
-            onClick={() => setMenuOpen(false)}
-            className="block px-3 py-2 text-base font-semibold text-neutral-700 hover:text-primary"
-          >
-            Shop All
-          </Link>
-          <Link 
-            to="/shop?category=Fruits%20%26%20Vegetables" 
-            onClick={() => setMenuOpen(false)}
-            className="block px-3 py-2 text-base font-semibold text-neutral-700 hover:text-primary"
-          >
-            Organic Produce
-          </Link>
+
           <Link 
             to="/wishlist" 
             onClick={() => setMenuOpen(false)}

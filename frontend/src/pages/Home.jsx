@@ -96,24 +96,7 @@ export default function Home() {
   return (
     <div className="space-y-6 fade-in">
       
-      {/* Temporary Seller Portal Shortcut Banner */}
-      <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-7xl mx-auto mt-2 text-left">
-        <div className="flex items-center gap-3">
-          <span className="p-2 bg-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider">
-            Shortcut
-          </span>
-          <div>
-            <h4 className="font-outfit font-bold text-neutral-800 text-sm">Quickcart Seller Portal</h4>
-            <p className="text-[10px] sm:text-xs text-neutral-500">Access the store inventory, products, orders, and sales dashboard on this same host.</p>
-          </div>
-        </div>
-        <Link 
-          to="/seller/dashboard"
-          className="px-5 py-2 bg-primary hover:bg-primary-dark text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-primary/10 hover:shadow-lg inline-block whitespace-nowrap"
-        >
-          Go to Seller Portal &rarr;
-        </Link>
-      </div>
+
 
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-3xl max-w-7xl mx-auto px-6 py-16 md:py-28 lg:px-16 mt-2 flex items-center justify-start min-h-[480px]">
@@ -319,7 +302,7 @@ export default function Home() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              alert('Successfully subscribed to HarvestFresh notifications!');
+              alert('Successfully subscribed to Quickcart notifications!');
             }}
             className="flex w-full md:w-auto flex-col sm:flex-row gap-3 flex-shrink-0"
           >

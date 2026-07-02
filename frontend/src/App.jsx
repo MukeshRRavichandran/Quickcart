@@ -54,7 +54,7 @@ function ProtectedRoute({ children }) {
       <div className="min-h-screen flex items-center justify-center bg-neutral-50">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <span className="font-outfit font-bold text-neutral-500 text-sm">Harvesting freshness...</span>
+          <span className="font-outfit font-bold text-neutral-500 text-sm">Loading Quickcart...</span>
         </div>
       </div>
     );
@@ -143,14 +143,7 @@ function AppContent() {
           <Route path="/register" element={<Auth />} />
 
           {/* Protected Routes */}
-          <Route 
-            path="/wishlist" 
-            element={
-              <ProtectedRoute>
-                <Wishlist />
-              </ProtectedRoute>
-            } 
-          />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route 
             path="/cart" 
             element={

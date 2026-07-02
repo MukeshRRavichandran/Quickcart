@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, X, ShoppingCart, Info, Share2, Sparkles, Star } from 'lucide-react';
+import { ChevronRight, X, ShoppingCart, Info, Share2, Sparkles, Star, ArrowLeft } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { productsAPI } from '../services/api';
@@ -57,12 +57,20 @@ export default function Wishlist() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 fade-in">
       
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-1.5 text-xs text-neutral-400 font-semibold">
-        <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-        <ChevronRight size={12} />
-        <span className="text-neutral-600">Wishlist</span>
-      </nav>
+      {/* Breadcrumbs & Back Link */}
+      <div className="flex flex-col items-start gap-2.5 text-left">
+        <Link 
+          to="/" 
+          className="flex items-center gap-1 text-xs font-bold text-neutral-500 hover:text-primary transition-colors w-fit"
+        >
+          <ArrowLeft size={14} /> Back to Home
+        </Link>
+        <nav className="flex items-center gap-1.5 text-xs text-neutral-400 font-semibold">
+          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+          <ChevronRight size={12} />
+          <span className="text-neutral-600">Wishlist</span>
+        </nav>
+      </div>
 
       {/* Header and buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-100 pb-5">

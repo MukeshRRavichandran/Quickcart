@@ -67,7 +67,7 @@ export default function SellerLayout({ children }) {
         <div className="h-20 px-6 border-b border-neutral-50 flex items-center justify-between">
           <Link to="/seller/dashboard" className="flex items-center gap-2">
             <span className="font-outfit font-extrabold text-lg text-primary">
-              Harvest<span className="text-primary-darker">Fresh</span>
+              Quick<span className="text-primary-darker">cart</span>
             </span>
             <span className="text-[10px] font-bold bg-neutral-100 text-neutral-500 px-2 py-0.5 rounded-full uppercase tracking-wider">
               Seller Portal

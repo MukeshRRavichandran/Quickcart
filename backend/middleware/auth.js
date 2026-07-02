@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'harvestfreshsecret12345';
+const JWT_SECRET = process.env.JWT_SECRET || 'quickcartsecret12345';
 
 // ── Authenticate any logged-in user ──────────────────────────────────────────
 export const protect = async (req, res, next) => {

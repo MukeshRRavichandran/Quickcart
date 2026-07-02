@@ -86,7 +86,7 @@ export default function Auth() {
       <div className="max-w-md mx-auto px-4 py-16 space-y-8 fade-in text-left font-outfit">
         <div className="text-center space-y-2">
           <span className="font-outfit font-extrabold text-3xl tracking-tight text-primary">
-            Harvest<span className="text-primary-darker">Fresh</span>
+            Quick<span className="text-primary-darker">cart</span>
           </span>
           <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl inline-block mt-4">
             <ShieldCheck size={32} />
@@ -131,7 +131,7 @@ export default function Auth() {
       {/* Brand logo details */}
       <div className="text-center space-y-2">
         <span className="font-outfit font-extrabold text-3xl tracking-tight text-primary">
-          Harvest<span className="text-primary-darker">Fresh</span>
+          Quick<span className="text-primary-darker">cart</span>
         </span>
         <h2 className="font-outfit font-bold text-xl text-neutral-800">
           {isLogin ? 'Welcome Back!' : 'Create Your Account'}
