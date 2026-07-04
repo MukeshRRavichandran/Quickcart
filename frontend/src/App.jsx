@@ -85,7 +85,7 @@ function SellerProtectedRoute({ children }) {
   }
 
   if (!isAuthenticated || user?.role !== 'seller') {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/seller/login" state={{ from: location }} replace />;
   }
 
   return children;
@@ -93,7 +93,8 @@ function SellerProtectedRoute({ children }) {
 
 function AppContent() {
   const location = useLocation();
-  const isSellerRoute = location.pathname.startsWith('/seller');
+  const isSellerRoute = (location.pathname.startsWith('/seller/') || location.pathname === '/seller') && 
+                        location.pathname !== '/seller/login';
 
   if (isSellerRoute) {
     return (
@@ -140,8 +141,9 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<ProductListing />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/login" element={<Auth />} />
-          <Route path="/register" element={<Auth />} />
+          <Route path="/login" element={<Auth defaultRole="customer" isRegister={false} />} />
+          <Route path="/register" element={<Auth defaultRole="customer" isRegister={true} />} />
+          <Route path="/seller/login" element={<Auth defaultRole="seller" isRegister={false} />} />
           <Route path="/seller-register" element={<SellerRegister />} />
 
           {/* Protected Routes */}

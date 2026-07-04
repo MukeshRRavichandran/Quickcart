@@ -123,7 +123,7 @@ export default function Analytics() {
               <div key={row.category} className="space-y-1.5">
                 <div className="flex justify-between items-center text-xs font-bold text-neutral-600">
                   <span>{row.category}</span>
-                  <span>${row.sales.toLocaleString()} ({row.share}%)</span>
+                  <span>₹{row.sales.toLocaleString()} ({row.share}%)</span>
                 </div>
                 <div className="h-2 bg-neutral-50 rounded-full overflow-hidden border border-neutral-100/55">
                   <div 
@@ -158,8 +158,8 @@ export default function Analytics() {
               {platformGrowthLogs.map((row) => (
                 <tr key={row.month} className="hover:bg-neutral-50/50 transition-colors">
                   <td className="py-3 font-bold text-neutral-800">{row.month} 2026</td>
-                  <td className="py-3 font-extrabold text-neutral-850">${row.sales.toFixed(2)}</td>
-                  <td className="py-3 text-emerald-600 font-extrabold">+${row.commissions.toFixed(2)}</td>
+                  <td className="py-3 font-extrabold text-neutral-850">₹{row.sales.toFixed(2)}</td>
+                  <td className="py-3 text-emerald-600 font-extrabold">+₹{row.commissions.toFixed(2)}</td>
                   <td className="py-3">
                     <span className="bg-emerald-50 text-emerald-600 border border-emerald-100 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase">
                       Audited

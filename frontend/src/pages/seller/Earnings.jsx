@@ -65,19 +65,19 @@ export default function Earnings() {
             
             <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm space-y-3">
               <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Wallet Balance</span>
-              <h2 className="font-outfit font-extrabold text-2xl text-primary">${earnings.balance.toFixed(2)}</h2>
+              <h2 className="font-outfit font-extrabold text-2xl text-primary">₹{earnings.balance.toFixed(2)}</h2>
               <p className="text-[9px] text-neutral-400 leading-none">Available for instant settlement</p>
             </div>
 
             <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm space-y-3">
               <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Pending Settlement</span>
-              <h2 className="font-outfit font-extrabold text-2xl text-neutral-800">${earnings.pendingSettlement.toFixed(2)}</h2>
+              <h2 className="font-outfit font-extrabold text-2xl text-neutral-800">₹{earnings.pendingSettlement.toFixed(2)}</h2>
               <p className="text-[9px] text-neutral-400 leading-none">Settle requests processing</p>
             </div>
 
             <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm space-y-3">
               <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Withdrawn to Date</span>
-              <h2 className="font-outfit font-extrabold text-2xl text-neutral-800">${earnings.withdrawnTotal.toFixed(2)}</h2>
+              <h2 className="font-outfit font-extrabold text-2xl text-neutral-800">₹{earnings.withdrawnTotal.toFixed(2)}</h2>
               <p className="text-[9px] text-neutral-400 leading-none">Total lifetime payouts settled</p>
             </div>
 
@@ -107,7 +107,7 @@ export default function Earnings() {
                       <td className="py-3 text-neutral-400">{tx.date}</td>
                       <td className="py-3 text-neutral-500">{tx.type}</td>
                       <td className={`py-3 font-bold ${tx.type === 'Withdrawal' ? 'text-red-500' : 'text-emerald-500'}`}>
-                        {tx.type === 'Withdrawal' ? '-' : '+'}${tx.amount.toFixed(2)}
+                        {tx.type === 'Withdrawal' ? '-' : '+'}₹{tx.amount.toFixed(2)}
                       </td>
                       <td className="py-3">
                         <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
@@ -134,7 +134,7 @@ export default function Earnings() {
 
           <form onSubmit={handleWithdrawSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-neutral-400 uppercase block">Amount to Settle ($) *</label>
+              <label className="text-[10px] font-bold text-neutral-400 uppercase block">Amount to Settle (₹) *</label>
               <input
                 type="number"
                 value={withdrawAmount}
@@ -143,7 +143,7 @@ export default function Earnings() {
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:border-primary/20 outline-none text-sm text-neutral-700 transition-all font-bold"
                 required
               />
-              <span className="text-[10px] text-neutral-400 font-semibold block">Max available: ${earnings.balance.toFixed(2)}</span>
+              <span className="text-[10px] text-neutral-400 font-semibold block">Max available: ₹{earnings.balance.toFixed(2)}</span>
             </div>
 
             {withdrawStatus && (

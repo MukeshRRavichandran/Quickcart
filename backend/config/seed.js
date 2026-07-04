@@ -655,10 +655,10 @@ const seedDB = async () => {
     await Wishlist.create({ user: seller._id, products: [] });
 
     // Seed Products linked to the default seller
-    const productsWithApproval = products.map(p => ({
+    const productsWithApproval = products.map((p, index) => ({
       ...p,
       seller: seller._id,
-      stock: 100,
+      stock: 15 + (index * 23) % 85,
       approvalStatus: 'approved'
     }));
     const createdProducts = await Product.insertMany(productsWithApproval);

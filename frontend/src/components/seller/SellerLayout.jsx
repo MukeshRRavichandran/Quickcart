@@ -6,8 +6,10 @@ import {
   User, Settings, HelpCircle, LogOut, Menu, X, Search, ChevronDown, CheckCircle
 } from 'lucide-react';
 import { useSeller } from '../../context/SellerContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function SellerLayout({ children }) {
+  const { logout } = useAuth();
   const { profile, notifications, messages, orders } = useSeller();
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,7 +36,8 @@ export default function SellerLayout({ children }) {
   ];
 
   const handleLogout = () => {
-    navigate('/login');
+    logout('seller');
+    navigate('/seller/login');
   };
 
   // Extract breadcrumbs from path

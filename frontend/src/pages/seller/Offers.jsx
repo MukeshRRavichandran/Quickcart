@@ -89,7 +89,7 @@ export default function Offers() {
                   <div className="text-right">
                     <span className="text-[10px] text-neutral-400 font-semibold block">Discount Value</span>
                     <span className="font-outfit font-extrabold text-lg text-primary">
-                      {offer.type === 'Percentage' ? `${offer.value}%` : offer.type === 'Free Shipping' ? 'FREE' : `$${offer.value}`}
+                      {offer.type === 'Percentage' ? `₹{offer.value}%` : offer.type === 'Free Shipping' ? 'FREE' : `₹₹{offer.value}`}
                     </span>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export default function Offers() {
                   className="w-full px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:border-primary/20 outline-none text-xs text-neutral-700 transition-all font-semibold"
                 >
                   <option value="Percentage">Percentage (%)</option>
-                  <option value="Flat Rate">Flat Rate ($)</option>
+                  <option value="Flat Rate">Flat Rate (₹)</option>
                   <option value="Free Shipping">Free Shipping</option>
                 </select>
               </div>

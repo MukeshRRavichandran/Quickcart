@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trash2, Plus, Minus, ArrowRight, ShieldCheck, HelpCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, Trash2, Plus, Minus, ArrowRight, ShieldCheck, HelpCircle, Sparkles, Home } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { productsAPI } from '../services/api';
 
@@ -76,13 +76,23 @@ export default function Cart() {
           <h1 className="font-outfit font-extrabold text-3xl text-neutral-800">Your Shopping Basket</h1>
           <p className="text-xs text-neutral-400 mt-1">Review your organic selection and proceed to checkout.</p>
         </div>
-        <Link 
-          to="/shop" 
-          className="flex items-center gap-1.5 text-sm font-bold text-neutral-600 hover:text-primary transition-colors"
-        >
-          <ArrowLeft size={16} />
-          Continue Shopping
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link 
+            to="/" 
+            className="flex items-center gap-1.5 text-sm font-bold text-neutral-600 hover:text-primary transition-colors"
+          >
+            <Home size={16} />
+            Back to Home
+          </Link>
+          <span className="text-neutral-200">|</span>
+          <Link 
+            to="/shop" 
+            className="flex items-center gap-1.5 text-sm font-bold text-neutral-600 hover:text-primary transition-colors"
+          >
+            <ArrowLeft size={16} />
+            Continue Shopping
+          </Link>
+        </div>
       </div>
 
       {cartItems.length === 0 ? (
@@ -143,9 +153,9 @@ export default function Cart() {
                       {/* Price */}
                       <div className="text-left sm:text-right">
                         <span className="font-outfit font-extrabold text-base text-neutral-800 block">
-                          ${itemTotal.toFixed(2)}
+                          ₹{itemTotal.toFixed(2)}
                         </span>
-                        <span className="text-[10px] text-neutral-400 block">${product.price.toFixed(2)} each</span>
+                        <span className="text-[10px] text-neutral-400 block">₹{product.price.toFixed(2)} each</span>
                       </div>
 
                       {/* Qty selector */}
@@ -200,7 +210,7 @@ export default function Cart() {
                     </div>
                     <div className="flex-grow">
                       <h4 className="font-outfit font-bold text-neutral-800 text-sm line-clamp-1">{prod.name}</h4>
-                      <span className="font-outfit font-extrabold text-xs text-primary">${prod.price.toFixed(2)}</span>
+                      <span className="font-outfit font-extrabold text-xs text-primary">₹{prod.price.toFixed(2)}</span>
                     </div>
                     <button
                       onClick={() => updateQuantity(prod._id, 1)}
@@ -225,12 +235,12 @@ export default function Cart() {
               <div className="space-y-3.5 text-sm text-neutral-500 font-medium">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="text-neutral-800 font-semibold">${subtotal.toFixed(2)}</span>
+                  <span className="text-neutral-800 font-semibold">₹{subtotal.toFixed(2)}</span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-primary">
                     <span>Discount (20%)</span>
-                    <span>-${discount.toFixed(2)}</span>
+                    <span>-₹{discount.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
@@ -238,17 +248,17 @@ export default function Cart() {
                   {shipping === 0 ? (
                     <span className="text-primary font-bold">FREE</span>
                   ) : (
-                    <span className="text-neutral-800 font-semibold">${shipping.toFixed(2)}</span>
+                    <span className="text-neutral-800 font-semibold">₹{shipping.toFixed(2)}</span>
                   )}
                 </div>
                 <div className="flex justify-between">
                   <span>Tax Estimation</span>
-                  <span className="text-neutral-800 font-semibold">${tax.toFixed(2)}</span>
+                  <span className="text-neutral-800 font-semibold">₹{tax.toFixed(2)}</span>
                 </div>
 
                 <div className="pt-4 border-t border-neutral-100 flex justify-between text-neutral-800">
                   <span className="font-outfit font-extrabold text-base">Total</span>
-                  <span className="font-outfit font-extrabold text-xl text-primary">${total.toFixed(2)}</span>
+                  <span className="font-outfit font-extrabold text-xl text-primary">₹{total.toFixed(2)}</span>
                 </div>
               </div>
 

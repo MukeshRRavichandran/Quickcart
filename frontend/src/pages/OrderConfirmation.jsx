@@ -120,7 +120,7 @@ export default function OrderConfirmation() {
         <div className="pt-4 space-y-2 text-xs font-semibold text-neutral-500">
           <div className="flex justify-between">
             <span>Subtotal</span>
-            <span className="text-neutral-800">${order.subtotal.toFixed(2)}</span>
+            <span className="text-neutral-800">₹{order.subtotal.toFixed(2)}</span>
           </div>
           {order.promoCode && (
             <div className="flex justify-between text-primary">
@@ -130,15 +130,15 @@ export default function OrderConfirmation() {
           )}
           <div className="flex justify-between">
             <span>Shipping</span>
-            <span>{order.shippingCost === 0 ? 'FREE' : `$${order.shippingCost.toFixed(2)}`}</span>
+            <span>{order.shippingCost === 0 ? 'FREE' : `₹${order.shippingCost.toFixed(2)}`}</span>
           </div>
           <div className="flex justify-between">
             <span>Tax</span>
-            <span>${order.tax.toFixed(2)}</span>
+            <span>₹{order.tax.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-neutral-800 text-sm border-t border-neutral-100 pt-3">
             <span className="font-outfit font-extrabold">Total Paid</span>
-            <span className="font-outfit font-extrabold text-primary">${order.total.toFixed(2)}</span>
+            <span className="font-outfit font-extrabold text-primary">₹{order.total.toFixed(2)}</span>
           </div>
         </div>
 

@@ -195,11 +195,11 @@ export default function ProductDetail() {
           {/* Pricing */}
           <div className="py-4 border-t border-b border-neutral-100 flex items-baseline gap-3">
             <span className="font-outfit font-extrabold text-3xl text-neutral-800">
-              ${product.price.toFixed(2)}
+              ₹{product.price.toFixed(2)}
             </span>
             {product.originalPrice > product.price && (
               <span className="text-sm text-neutral-400 line-through">
-                ${product.originalPrice.toFixed(2)}
+                ₹{product.originalPrice.toFixed(2)}
               </span>
             )}
             <span className="text-xs text-neutral-400 font-semibold block capitalize ml-2">

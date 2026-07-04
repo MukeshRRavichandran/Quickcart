@@ -108,7 +108,7 @@ export default function Customers() {
                         <span>{cust.ordersCount} orders</span>
                       </div>
                     </td>
-                    <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-800">${cust.totalSpend.toFixed(2)}</td>
+                    <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-800">₹{cust.totalSpend.toFixed(2)}</td>
                     <td className="py-3.5 px-6">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${
                         isBlocked 

@@ -176,7 +176,7 @@ export default function Products() {
                       </td>
                       <td className="py-3.5 px-6 font-mono text-xs">{p.sku}</td>
                       <td className="py-3.5 px-6 text-xs font-semibold">{p.category}</td>
-                      <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-800">${p.price.toFixed(2)}</td>
+                      <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-800">₹{p.price.toFixed(2)}</td>
                       <td className={`py-3.5 px-6 font-bold ${p.stock <= 10 ? 'text-red-500' : 'text-neutral-700'}`}>
                         {p.stock} units
                       </td>

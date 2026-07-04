@@ -148,7 +148,7 @@ export default function Profile() {
 
                       <div>
                         <span className="text-[10px] text-neutral-400 font-bold block uppercase tracking-wider">Total Amount</span>
-                        <span className="font-outfit font-extrabold text-sm text-primary block">${order.total.toFixed(2)}</span>
+                        <span className="font-outfit font-extrabold text-sm text-primary block">₹{order.total.toFixed(2)}</span>
                       </div>
 
                       <div className="flex items-center gap-3">

@@ -48,13 +48,13 @@ export default function Payments() {
         
         <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm space-y-3">
           <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Pending Seller Settlements</span>
-          <h2 className="font-outfit font-extrabold text-2xl text-amber-500">${pendingPayoutTotal.toFixed(2)}</h2>
+          <h2 className="font-outfit font-extrabold text-2xl text-amber-500">₹{pendingPayoutTotal.toFixed(2)}</h2>
           <p className="text-[9px] text-neutral-405 leading-none">Awaiting administrative bank checks</p>
         </div>
 
         <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm space-y-3">
           <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Gross lifetime Payouts settled</span>
-          <h2 className="font-outfit font-extrabold text-2xl text-primary">${settledPayoutTotal.toFixed(2)}</h2>
+          <h2 className="font-outfit font-extrabold text-2xl text-primary">₹{settledPayoutTotal.toFixed(2)}</h2>
           <p className="text-[9px] text-neutral-405 leading-none">Settle requests successfully transferred</p>
         </div>
 
@@ -103,7 +103,7 @@ export default function Payments() {
                   <tr key={pay.id} className="hover:bg-neutral-50/50 transition-colors">
                     <td className="py-3.5 px-6 font-mono text-xs font-bold text-neutral-800">#{pay.id}</td>
                     <td className="py-3.5 px-6">{pay.seller}</td>
-                    <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-850">${pay.amount.toFixed(2)}</td>
+                    <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-850">₹{pay.amount.toFixed(2)}</td>
                     <td className="py-3.5 px-6 text-neutral-400">{pay.requestDate}</td>
                     <td className="py-3.5 px-6">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${badge}`}>

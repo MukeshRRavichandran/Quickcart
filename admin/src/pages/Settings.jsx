@@ -57,7 +57,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-neutral-400 uppercase block">Standard Courier Shipping fee ($) *</label>
+                  <label className="text-[10px] font-bold text-neutral-400 uppercase block">Standard Courier Shipping fee (₹) *</label>
                   <input
                     type="number"
                     value={shippingRate}

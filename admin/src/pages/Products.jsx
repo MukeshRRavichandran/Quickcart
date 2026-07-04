@@ -133,7 +133,7 @@ export default function Products() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-neutral-400 uppercase block">Price ($) *</label>
+                  <label className="text-[10px] font-bold text-neutral-400 uppercase block">Price (₹) *</label>
                   <input
                     type="number"
                     value={newProdPrice}
@@ -279,7 +279,7 @@ export default function Products() {
                       </td>
                       <td className="py-3.5 px-6 text-neutral-700">{p.seller}</td>
                       <td className="py-3.5 px-6 text-xs">{p.category}</td>
-                      <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-850">${p.price.toFixed(2)}</td>
+                      <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-850">₹{p.price.toFixed(2)}</td>
                       <td className={`py-3.5 px-6 font-bold ${p.stock === 0 ? 'text-red-500' : 'text-neutral-550'}`}>
                         {p.stock} units
                       </td>

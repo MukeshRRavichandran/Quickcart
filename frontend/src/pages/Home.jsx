@@ -9,7 +9,6 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('BEST SELLERS');
-  const [address, setAddress] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,14 +24,6 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  const handleAddressSubmit = (e) => {
-    e.preventDefault();
-    if (address.trim()) {
-      navigate(`/shop?address=${encodeURIComponent(address.trim())}`);
-    } else {
-      navigate('/shop');
-    }
-  };
 
   // Filters
   const popularPicks = products.filter(p => p.originalPrice > p.price).slice(0, 4);
@@ -122,21 +113,14 @@ export default function Home() {
             From farm to table in 30 minutes. Sourced responsibly from our local fields straight to your kitchen.
           </p>
 
-          <form onSubmit={handleAddressSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md">
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter your delivery address"
-              className="flex-grow px-5 py-3.5 bg-white border border-neutral-200 rounded-xl outline-none focus:border-primary/45 transition-all text-sm shadow-md"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2"
+          <div className="flex gap-3">
+            <Link
+              to="/shop"
+              className="px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2 inline-flex"
             >
               Order Now
-            </button>
-          </form>
+            </Link>
+          </div>
 
           <div className="pt-2">
             <Link

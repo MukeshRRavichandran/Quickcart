@@ -40,7 +40,7 @@ export default function Dashboard() {
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Platform Gross Revenue</span>
-            <h3 className="font-outfit font-extrabold text-xl text-neutral-800">${totalRevenue.toLocaleString()}</h3>
+            <h3 className="font-outfit font-extrabold text-xl text-neutral-800">₹{totalRevenue.toLocaleString()}</h3>
           </div>
         </div>
 

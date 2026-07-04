@@ -55,7 +55,7 @@ export default function Customers() {
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Total Customer Spend</span>
-            <h3 className="font-outfit font-extrabold text-xl text-neutral-800">${totalSpentAll.toFixed(2)}</h3>
+            <h3 className="font-outfit font-extrabold text-xl text-neutral-800">₹{totalSpentAll.toFixed(2)}</h3>
           </div>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function Customers() {
                       </div>
                     </td>
                     <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-850">
-                      ${c.totalSpend.toFixed(2)}
+                      ₹{c.totalSpend.toFixed(2)}
                     </td>
                     <td className="py-3.5 px-6">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${

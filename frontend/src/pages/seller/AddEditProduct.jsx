@@ -270,7 +270,7 @@ export default function AddEditProduct() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-neutral-500 block">Sell Price ($) *</label>
+                    <label className="text-xs font-bold text-neutral-500 block">Sell Price (₹) *</label>
                     <input
                       type="number"
                       name="price"

@@ -270,7 +270,7 @@ export default function ProductListing() {
               />
               <div className="flex justify-between items-center text-xs font-semibold text-neutral-500">
                 <span>Min: $0.00</span>
-                <span className="text-primary font-bold">Max: ${maxPrice.toFixed(2)}</span>
+                <span className="text-primary font-bold">Max: ₹{maxPrice.toFixed(2)}</span>
               </div>
             </div>
           </div>

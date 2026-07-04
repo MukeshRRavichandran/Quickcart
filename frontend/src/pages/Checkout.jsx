@@ -439,12 +439,12 @@ export default function Checkout() {
             <div className="space-y-3.5 text-xs text-neutral-500 font-semibold border-t border-neutral-100 pt-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="text-neutral-800">${subtotal.toFixed(2)}</span>
+                <span className="text-neutral-800">₹{subtotal.toFixed(2)}</span>
               </div>
               {discount > 0 && (
                 <div className="flex justify-between text-primary">
                   <span>Discount</span>
-                  <span>-${discount.toFixed(2)}</span>
+                  <span>-₹{discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -457,12 +457,12 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between">
                 <span>Tax</span>
-                <span className="text-neutral-800">${tax.toFixed(2)}</span>
+                <span className="text-neutral-800">₹{tax.toFixed(2)}</span>
               </div>
               
               <div className="pt-4 border-t border-neutral-100 flex justify-between text-neutral-800">
                 <span className="font-outfit font-extrabold text-sm">Total</span>
-                <span className="font-outfit font-extrabold text-lg text-primary">${finalTotal.toFixed(2)}</span>
+                <span className="font-outfit font-extrabold text-lg text-primary">₹{finalTotal.toFixed(2)}</span>
               </div>
             </div>
 

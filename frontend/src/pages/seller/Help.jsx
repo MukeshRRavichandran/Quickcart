@@ -12,7 +12,7 @@ export default function Help() {
     { q: 'How long do settlements take to post to my bank account?', a: 'Payout requests are processed daily. Depending on your bank institution, funds usually reflect in your account within 2-3 business days.' },
     { q: 'Can I sell items without labeling them as organic?', a: 'Yes! Quickcart lists both conventional and certified organic items. Simply toggle the "Organic Cultivation" switch off during product creation.' },
     { q: 'How do I generate an Excel spreadsheet of my total sales?', a: 'Navigate to "Analytics & Reports" in the sidebar. At the top right, click "Export Excel". Your mock summary report downloads instantly.' },
-    { q: 'What is the flat rate delivery charge for customers?', a: 'Customers are charged a flat $5.99 delivery fee. Carts matching or exceeding $50.00 qualify for free delivery.' }
+    { q: 'What is the flat rate delivery charge for customers?', a: 'Customers are charged a flat ₹5.99 delivery fee. Carts matching or exceeding ₹50.00 qualify for free delivery.' }
   ];
 
   const handleTicketSubmit = (e) => {

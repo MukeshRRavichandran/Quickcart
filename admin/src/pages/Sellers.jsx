@@ -77,7 +77,7 @@ export default function Sellers() {
                 </div>
                 <div className="space-y-0.5">
                   <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Gross Revenue</span>
-                  <span className="text-primary font-bold">${viewSeller.earnings.toFixed(2)}</span>
+                  <span className="text-primary font-bold">₹{viewSeller.earnings.toFixed(2)}</span>
                 </div>
               </div>
               <div className="space-y-0.5">
@@ -159,7 +159,7 @@ export default function Sellers() {
                     </td>
                     <td className="py-3.5 px-6">{sel.registrationDate}</td>
                     <td className="py-3.5 px-6 text-center font-bold text-neutral-700">{sel.productsCount} products</td>
-                    <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-800">${sel.earnings.toFixed(2)}</td>
+                    <td className="py-3.5 px-6 text-center font-outfit font-extrabold text-neutral-800">₹{sel.earnings.toFixed(2)}</td>
                     <td className="py-3.5 px-6">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${
                         isApproved 

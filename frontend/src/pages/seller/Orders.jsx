@@ -141,7 +141,7 @@ export default function Orders() {
                       <td className="py-3.5 px-6 text-xs text-neutral-500">
                         {o.items.map(item => `${item.product} (x${item.quantity})`).join(', ')}
                       </td>
-                      <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-800">${o.amount.toFixed(2)}</td>
+                      <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-800">₹{o.amount.toFixed(2)}</td>
                       <td className="py-3.5 px-6">
                         <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase border border-emerald-100">
                           {o.paymentStatus}

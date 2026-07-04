@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, Heart, ShoppingBasket, User, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -7,7 +7,7 @@ import { useWishlist } from '../context/WishlistContext';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const { cartCount } = useCart();
+  const { cartItems, cartCount, subtotal } = useCart();
   const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,6 +15,19 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [prevCount, setPrevCount] = useState(cartCount);
+
+  useEffect(() => {
+    if (cartCount > prevCount) {
+      setShowPopup(true);
+      const timer = setTimeout(() => {
+        setShowPopup(false);
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+    setPrevCount(cartCount);
+  }, [cartCount, prevCount]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -24,9 +37,9 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    logout();
+    logout('customer');
     setProfileDropdownOpen(false);
-    navigate('/');
+    navigate('/login');
   };
 
   return (
@@ -64,6 +77,14 @@ export default function Navbar() {
             >
               Seller Portal
             </Link>
+
+            {/* Customer Portal Link */}
+            <Link 
+              to="/login"
+              className="hidden md:inline-flex items-center px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-full transition-colors whitespace-nowrap"
+            >
+              Customer Portal
+            </Link>
           </div>
 
           {/* User actions */}
@@ -82,13 +103,57 @@ export default function Navbar() {
             </Link>
 
             {/* Cart */}
-            <Link 
-              to="/cart" 
-              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-sm shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <ShoppingBasket size={18} />
-              <span>Basket ({cartCount})</span>
-            </Link>
+            <div className="relative">
+              <Link 
+                to="/cart" 
+                className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-full font-semibold text-sm shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <ShoppingBasket size={18} />
+                <span>Basket ({cartCount})</span>
+              </Link>
+
+              {/* Popover Mini-Basket */}
+              {showPopup && (
+                <div className="absolute right-0 mt-3 w-80 bg-white border border-neutral-100 rounded-2xl shadow-xl z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-300 font-outfit">
+                  <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+                    <span className="text-xs font-extrabold text-neutral-800">Added to Basket! 🎉</span>
+                    <button onClick={() => setShowPopup(false)} className="text-neutral-400 hover:text-neutral-600 transition-colors">
+                      <X size={14} />
+                    </button>
+                  </div>
+                  
+                  {/* Scrollable Items list */}
+                  <div className="max-h-48 overflow-y-auto divide-y divide-neutral-50 my-2 pr-1 scrollbar-thin">
+                    {cartItems.map((item) => (
+                      <div key={item.product?._id} className="flex items-center gap-3 py-2.5 first:pt-1.5 last:pb-1.5">
+                        <img src={item.product?.image} alt={item.product?.name} className="w-10 h-10 rounded-lg object-cover bg-neutral-50" />
+                        <div className="flex-grow text-left space-y-0.5 min-w-0">
+                          <h4 className="text-[11px] font-bold text-neutral-800 truncate">{item.product?.name}</h4>
+                          <span className="text-[10px] text-neutral-400 font-semibold block">
+                            {item.quantity} x ₹{item.product?.price.toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-neutral-400 font-bold block uppercase tracking-wider">Subtotal</span>
+                      <span className="text-xs font-extrabold text-neutral-800">₹{subtotal.toFixed(2)}</span>
+                    </div>
+                    <Link
+                      to="/cart"
+                      onClick={() => setShowPopup(false)}
+                      className="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-[10px] font-bold rounded-full shadow-md shadow-primary/10 transition-all"
+                    >
+                      View Basket
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* User Profile */}
             <div className="relative">

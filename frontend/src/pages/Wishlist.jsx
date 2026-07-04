@@ -170,7 +170,7 @@ export default function Wishlist() {
                   <div className="pt-3 border-t border-neutral-50 flex items-center justify-between gap-3">
                     <div>
                       <span className="font-outfit font-extrabold text-base text-neutral-800">
-                        ${product.price.toFixed(2)}
+                        ₹{product.price.toFixed(2)}
                       </span>
                       <span className="text-[9px] text-neutral-400 capitalize block -mt-1">
                         / {product.unit}
@@ -217,7 +217,7 @@ export default function Wishlist() {
                   <div className="flex flex-col justify-between py-1">
                     <div>
                       <h4 className="font-outfit font-bold text-neutral-800 text-xs sm:text-sm line-clamp-1">{prod.name}</h4>
-                      <span className="font-outfit font-extrabold text-sm text-neutral-800">${prod.price.toFixed(2)}</span>
+                      <span className="font-outfit font-extrabold text-sm text-neutral-800">₹{prod.price.toFixed(2)}</span>
                     </div>
                     <button
                       onClick={() => handleQuickAdd(prod._id)}

@@ -19,7 +19,7 @@ export default function Dashboard() {
   const storeViews = 2845;
 
   const metrics = [
-    { label: 'Total Sales', value: `$${totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, trend: '▲ 18.6% vs last week', icon: ShoppingBag, color: 'text-emerald-500 bg-emerald-50' },
+    { label: 'Total Sales', value: `₹₹{totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, trend: '▲ 18.6% vs last week', icon: ShoppingBag, color: 'text-emerald-500 bg-emerald-50' },
     { label: 'Total Orders', value: totalOrdersCount, trend: '▲ 12.4% vs last week', icon: ClipboardList, color: 'text-blue-500 bg-blue-50' },
     { label: 'Pending Orders', value: pendingOrdersCount, trend: '▼ 8.3% vs last week', icon: AlertTriangle, color: 'text-amber-500 bg-amber-50', isWarning: true },
     { label: 'Products', value: productsCount, trend: '▲ 5.7% vs last week', icon: ShoppingBag, color: 'text-indigo-500 bg-indigo-50' },
@@ -247,7 +247,7 @@ export default function Dashboard() {
                   </div>
                   <div className="text-left space-y-0.5">
                     <h4 className="font-outfit font-bold text-xs text-neutral-800 line-clamp-1 max-w-[130px]">{prod.name}</h4>
-                    <span className="text-[10px] font-bold text-neutral-400">${prod.price.toFixed(2)}</span>
+                    <span className="text-[10px] font-bold text-neutral-400">₹{prod.price.toFixed(2)}</span>
                   </div>
                 </div>
                 <div className="text-right">
@@ -326,7 +326,7 @@ export default function Dashboard() {
                   </div>
                   
                   <div className="text-right space-y-0.5">
-                    <span className="text-xs font-extrabold text-neutral-800 block">${order.amount.toFixed(2)}</span>
+                    <span className="text-xs font-extrabold text-neutral-800 block">₹{order.amount.toFixed(2)}</span>
                     <span className="text-[9px] text-neutral-400 block font-semibold">{order.timeAgo}</span>
                   </div>
 

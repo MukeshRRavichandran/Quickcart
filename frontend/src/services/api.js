@@ -4,7 +4,9 @@ const getHeaders = () => {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const token = localStorage.getItem('token');
+  const isSellerPath = window.location.pathname.startsWith('/seller/') || window.location.pathname === '/seller';
+  const tokenKey = isSellerPath ? 'sellerToken' : 'customerToken';
+  const token = localStorage.getItem(tokenKey);
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }

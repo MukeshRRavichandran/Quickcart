@@ -3,14 +3,22 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, ShieldCheck, Store } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-export default function Auth() {
+export default function Auth({ defaultRole = 'seller', isRegister = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, register } = useAuth();
   
-  const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState('seller'); // default to seller portal
+  const [isLogin, setIsLogin] = useState(!isRegister);
+  const [role, setRole] = useState(defaultRole);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+
+  React.useEffect(() => {
+    setIsLogin(!isRegister);
+    setRole(defaultRole);
+    setError('');
+    setRegistrationSuccess(false);
+  }, [defaultRole, isRegister]);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,9 +41,10 @@ export default function Auth() {
 
     try {
       if (isLogin) {
-        await login(formData.email, formData.password);
+        await login(formData.email, formData.password, role);
         // On success, redirect
-        const token = localStorage.getItem('token');
+        const tokenKey = role === 'seller' ? 'sellerToken' : 'customerToken';
+        const token = localStorage.getItem(tokenKey);
         if (token) {
           const userPayload = JSON.parse(atob(token.split('.')[1]));
           if (userPayload.role === 'seller') {
@@ -146,10 +155,21 @@ export default function Auth() {
         
         {/* Title Header Badge */}
         <div className="text-center border-b border-neutral-50 pb-3 flex items-center justify-center gap-1.5 font-outfit">
-          <Store size={15} className="text-primary" />
-          <span className="text-xs font-extrabold text-neutral-700 uppercase tracking-wider">
-            Seller Portal
-          </span>
+          {role === 'seller' ? (
+            <>
+              <Store size={15} className="text-primary" />
+              <span className="text-xs font-extrabold text-neutral-700 uppercase tracking-wider">
+                Seller Portal
+              </span>
+            </>
+          ) : (
+            <>
+              <User size={15} className="text-primary" />
+              <span className="text-xs font-extrabold text-neutral-700 uppercase tracking-wider">
+                Customer Portal
+              </span>
+            </>
+          )}
         </div>
 
         {role === 'seller' && !isLogin ? (
@@ -241,14 +261,25 @@ export default function Auth() {
           </form>
         )}
 
-        {/* Switch mode button */}
-        <div className="text-center pt-2">
+        {/* Switch mode & Forgot Password block */}
+        <div className="flex justify-between items-center pt-2 font-outfit text-xs font-bold">
+          {isLogin ? (
+            <button
+              type="button"
+              onClick={() => alert('Password reset link has been sent to your email address!')}
+              className="text-neutral-450 hover:text-primary transition-colors hover:underline"
+            >
+              Forgot Password?
+            </button>
+          ) : (
+            <div></div>
+          )}
           <button
             onClick={() => {
               setIsLogin(!isLogin);
               setError('');
             }}
-            className="text-xs font-bold text-primary hover:underline"
+            className="text-neutral-800 hover:text-black hover:underline"
           >
             {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Log In'}
           </button>

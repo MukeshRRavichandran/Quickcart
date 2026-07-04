@@ -147,7 +147,7 @@ export default function Orders() {
                     <td className="py-3.5 px-6 font-mono text-xs font-bold text-neutral-800">#{o.id}</td>
                     <td className="py-3.5 px-6">{o.customer}</td>
                     <td className="py-3.5 px-6 text-neutral-500">{o.seller}</td>
-                    <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-850">${o.amount.toFixed(2)}</td>
+                    <td className="py-3.5 px-6 font-outfit font-extrabold text-neutral-850">₹{o.amount.toFixed(2)}</td>
                     <td className="py-3.5 px-6">
                       {o.deliveryPartner ? (
                         <span className="text-neutral-700 font-bold">{o.deliveryPartner}</span>

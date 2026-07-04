@@ -47,7 +47,7 @@ export const AdminProvider = ({ children }) => {
 
   // Help tickets queue
   const [tickets, setTickets] = useState([
-    { id: 'TCK-101', subject: 'Payout delays', user: 'VeggieMart (Seller)', date: '30 Jun 2026', status: 'Open', message: 'Payout of $480.00 is still pending settlement.' },
+    { id: 'TCK-101', subject: 'Payout delays', user: 'VeggieMart (Seller)', date: '30 Jun 2026', status: 'Open', message: 'payout of ₹480.00 is still pending settlement.' },
     { id: 'TCK-102', subject: 'Refund query', user: 'Jane Smith (Customer)', date: '28 Jun 2026', status: 'Resolved', message: 'I have not received the credit refund for order #ORD-1202.' }
   ]);
 

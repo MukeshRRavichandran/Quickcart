@@ -85,11 +85,11 @@ export default function OrderDetail() {
                     <div className="text-left space-y-0.5">
                       <h4 className="font-outfit font-bold text-neutral-800 text-sm">{item.product}</h4>
                       <span className="text-[10px] text-neutral-400 font-semibold">
-                        Quantity: x{item.quantity} • Unit Price: ${item.price.toFixed(2)}
+                        Quantity: x{item.quantity} • Unit Price: ₹{item.price.toFixed(2)}
                       </span>
                     </div>
                     <span className="font-outfit font-extrabold text-sm text-neutral-800">
-                      ${total.toFixed(2)}
+                      ₹{total.toFixed(2)}
                     </span>
                   </div>
                 );
@@ -223,7 +223,7 @@ export default function OrderDetail() {
               </div>
               <div className="flex justify-between pt-2 border-t border-neutral-50 text-neutral-800">
                 <span className="font-extrabold">Paid amount</span>
-                <span className="font-extrabold text-sm text-primary">${order.amount.toFixed(2)}</span>
+                <span className="font-extrabold text-sm text-primary">₹{order.amount.toFixed(2)}</span>
               </div>
             </div>
           </div>

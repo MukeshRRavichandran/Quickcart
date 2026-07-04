@@ -79,7 +79,7 @@ export default function Coupons() {
                   <div className="text-right">
                     <span className="text-[10px] text-neutral-400 font-semibold block">Value</span>
                     <span className="font-outfit font-extrabold text-lg text-primary">
-                      {c.type === 'Percentage' ? `${c.value}%` : `$${c.value}`}
+                      {c.type === 'Percentage' ? `₹{c.value}%` : `₹₹{c.value}`}
                     </span>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function Coupons() {
                   className="w-full px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-xl text-xs font-semibold"
                 >
                   <option value="Percentage">Percentage (%)</option>
-                  <option value="Flat">Flat rate ($)</option>
+                  <option value="Flat">Flat rate (₹)</option>
                 </select>
               </div>
 
