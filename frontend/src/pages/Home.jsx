@@ -125,39 +125,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Core Value Badges */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="flex items-center gap-4 p-5 bg-white border border-neutral-100 rounded-2xl hover:shadow-md transition-shadow">
-          <div className="p-3 bg-primary-light text-primary rounded-xl">
-            <Truck size={24} />
-          </div>
-          <div>
-            <h4 className="font-outfit font-bold text-neutral-800 text-sm">Free Delivery</h4>
-            <p className="text-xs text-neutral-400">On orders over $50</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-4 p-5 bg-white border border-neutral-100 rounded-2xl hover:shadow-md transition-shadow">
-          <div className="p-3 bg-blue-50 text-blue-500 rounded-xl">
-            <ShieldCheck size={24} />
-          </div>
-          <div>
-            <h4 className="font-outfit font-bold text-neutral-800 text-sm">Fresh Guarantee</h4>
-            <p className="text-xs text-neutral-400">100% money back guarantee</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-4 p-5 bg-white border border-neutral-100 rounded-2xl hover:shadow-md transition-shadow">
-          <div className="p-3 bg-amber-50 text-amber-500 rounded-xl">
-            <RefreshCw size={24} />
-          </div>
-          <div>
-            <h4 className="font-outfit font-bold text-neutral-800 text-sm">Easy Returns</h4>
-            <p className="text-xs text-neutral-400">Hassle-free 24h pickup</p>
-          </div>
-        </div>
-      </section>
-
       {/* Popular Picks & Deals */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex justify-between items-end border-b border-neutral-100 pb-4">
