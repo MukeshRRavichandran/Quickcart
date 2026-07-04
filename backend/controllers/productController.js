@@ -50,11 +50,9 @@ export const createSellerProduct = async (req, res) => {
     } = req.body;
 
     const finalTags = Array.isArray(tags) ? [...tags] : [];
+    if (!finalTags.includes('Bestseller')) finalTags.push('Bestseller');
+    if (!finalTags.includes('Fresh Pick')) finalTags.push('Fresh Pick');
     if (isOrganic && !finalTags.includes('Organic')) finalTags.push('Organic');
-    if (isFeatured) {
-      if (!finalTags.includes('Bestseller')) finalTags.push('Bestseller');
-      if (!finalTags.includes('Fresh Pick')) finalTags.push('Fresh Pick');
-    }
 
     const product = await Product.create({
       name,
