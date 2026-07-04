@@ -122,14 +122,6 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="pt-2">
-            <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 text-xs font-bold text-neutral-700 bg-white border border-neutral-200 rounded-full px-4 py-2 hover:border-primary/40 hover:text-primary transition-all duration-200 shadow-sm"
-            >
-              Explore Categories <ArrowRight size={14} />
-            </Link>
-          </div>
         </div>
       </section>
 
