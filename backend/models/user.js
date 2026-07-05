@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema(
     bankName:      { type: String, default: '' },
     bankAccount:   { type: String, default: '' },
     routingNumber: { type: String, default: '' },
+    aadhaarFile:   { type: String, default: '' },
+    panFile:       { type: String, default: '' },
+    licenseFile:   { type: String, default: '' },
     // Customer shipping address
     address: {
       name:    { type: String, default: '' },

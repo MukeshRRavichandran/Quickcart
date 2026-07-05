@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Store, Search, ShieldCheck, ShieldAlert, CheckCircle, Trash2, X } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
 
 export default function Sellers() {
   const { sellers, approveSeller, suspendSeller } = useAdmin();
 
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedVerification, setSelectedVerification] = useState('All');
   
-  // Selected Seller for detailed modal view
-  const [viewSeller, setViewSeller] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
 
   const handleApprove = (id) => {
@@ -41,51 +41,6 @@ export default function Sellers() {
         <div className="fixed top-24 right-6 bg-neutral-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 z-50 animate-pulse">
           <CheckCircle size={16} className="text-primary" />
           <span>{toastMessage}</span>
-        </div>
-      )}
-
-      {/* Seller details modal */}
-      {viewSeller && (
-        <div className="fixed inset-0 z-50 bg-neutral-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white border border-neutral-100 rounded-3xl p-6 max-w-md w-full space-y-4 text-left">
-            <div className="flex justify-between items-center border-b border-neutral-50 pb-2">
-              <h3 className="font-outfit font-extrabold text-neutral-850 text-base">Store Specifications</h3>
-              <button onClick={() => setViewSeller(null)} className="text-neutral-400 hover:text-neutral-600">
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="space-y-3.5 text-xs sm:text-sm font-semibold text-neutral-600">
-              <div className="space-y-0.5">
-                <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Store Brand Name</span>
-                <span className="text-neutral-800 text-base font-extrabold">{viewSeller.name}</span>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-0.5">
-                  <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Registration Date</span>
-                  <span className="text-neutral-800">{viewSeller.registrationDate}</span>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Total Listed Items</span>
-                  <span className="text-neutral-800">{viewSeller.productsCount} products</span>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-0.5">
-                  <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Primary Phone</span>
-                  <span className="text-neutral-800">{viewSeller.phone}</span>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Gross Revenue</span>
-                  <span className="text-primary font-bold">₹{viewSeller.earnings.toFixed(2)}</span>
-                </div>
-              </div>
-              <div className="space-y-0.5">
-                <span className="text-[10px] text-neutral-400 uppercase tracking-widest block">Corporate Email</span>
-                <span className="text-neutral-850">{viewSeller.email}</span>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
@@ -174,7 +129,7 @@ export default function Sellers() {
                     <td className="py-3.5 px-6">
                       <div className="flex items-center justify-center gap-2">
                         <button
-                          onClick={() => setViewSeller(sel)}
+                          onClick={() => navigate(`/admin/sellers/${sel.id}`)}
                           className="px-2 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-600 rounded-lg font-bold text-[10px]"
                         >
                           View Details

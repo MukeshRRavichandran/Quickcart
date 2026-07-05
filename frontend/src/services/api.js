@@ -43,11 +43,24 @@ export const authAPI = {
     method: 'POST',
     body: JSON.stringify({ email, password }),
   }),
-  register: (name, email, password, role = 'customer', storeName = '') => apiRequest('/auth/register', {
+  register: (name, email, password, role = 'customer', storeName = '', extraData = {}) => apiRequest('/auth/register', {
     method: 'POST',
-    body: JSON.stringify({ name, email, password, role, storeName }),
+    body: JSON.stringify({ name, email, password, role, storeName, ...extraData }),
   }),
   getMe: () => apiRequest('/auth/me'),
+  uploadFiles: async (formData) => {
+    const url = `${API_URL}/upload`;
+    const headers = getHeaders();
+    delete headers['Content-Type']; // Let browser set multipart/form-data boundary
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Upload failed');
+    return data;
+  }
 };
 
 export const productsAPI = {

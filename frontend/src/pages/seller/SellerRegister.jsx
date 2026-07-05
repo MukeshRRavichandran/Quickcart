@@ -19,6 +19,7 @@ import {
   Phone 
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { authAPI } from '../../services/api';
 
 export default function SellerRegister() {
   const navigate = useNavigate();
@@ -62,6 +63,12 @@ export default function SellerRegister() {
     acceptedTerms: false
   });
 
+  const [documents, setDocuments] = useState({
+    aadhaarFile: null,
+    panFile: null,
+    licenseFile: null
+  });
+
   // Mock Upload states
   const [uploadProgress, setUploadProgress] = useState({
     aadhaar: 0,
@@ -77,20 +84,24 @@ export default function SellerRegister() {
     }));
   };
 
-  // Mock document upload progress
-  const handleFileUpload = (type, fileName) => {
-    setUploadProgress(prev => ({ ...prev, [type]: 10 }));
-    
-    let progress = 10;
-    const interval = setInterval(() => {
-      progress += 30;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        setFormData(prev => ({ ...prev, [`${type}File`]: fileName }));
-      }
-      setUploadProgress(prev => ({ ...prev, [type]: progress }));
-    }, 150);
+  // File upload handler
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadProgress(prev => ({ ...prev, [type]: 10 }));
+      setDocuments(prev => ({ ...prev, [`${type}File`]: file }));
+      
+      let progress = 10;
+      const interval = setInterval(() => {
+        progress += 30;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          setFormData(prev => ({ ...prev, [`${type}File`]: file.name }));
+        }
+        setUploadProgress(prev => ({ ...prev, [type]: progress }));
+      }, 150);
+    }
   };
 
   const nextStep = () => {
@@ -156,13 +167,47 @@ export default function SellerRegister() {
     setLoading(true);
 
     try {
-      // Calls existing backend register workflow without changes
+      // Upload files first
+      let fileUrls = {};
+      if (documents.aadhaarFile || documents.panFile || documents.licenseFile) {
+        const fileData = new FormData();
+        if (documents.aadhaarFile) fileData.append('aadhaarFile', documents.aadhaarFile);
+        if (documents.panFile) fileData.append('panFile', documents.panFile);
+        if (documents.licenseFile) fileData.append('licenseFile', documents.licenseFile);
+        
+        try {
+          const uploadRes = await authAPI.uploadFiles(fileData);
+          fileUrls = uploadRes.fileUrls || {};
+        } catch (uploadErr) {
+          setError('Failed to upload documents. Please try again.');
+          setLoading(false);
+          return;
+        }
+      }
+
       await register(
         formData.name,
         formData.email,
         formData.password,
         'seller',
-        formData.shopName
+        formData.shopName,
+        {
+          gstin: formData.gstin,
+          bankName: formData.bankName,
+          bankAccount: formData.bankAccount,
+          routingNumber: formData.routingNumber,
+          phone: formData.phone,
+          address: {
+            address: formData.addressLine,
+            city: formData.city,
+            state: formData.state,
+            zipCode: formData.zipCode,
+            phone: formData.phone
+          },
+          aadhaarFile: fileUrls.aadhaarFile || '',
+          panFile: fileUrls.panFile || '',
+          licenseFile: fileUrls.licenseFile || ''
+        }
       );
 
       // Save additional profile details in local storage for local reference if needed
@@ -623,8 +668,15 @@ export default function SellerRegister() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Document Aadhaar */}
-                  <div className="bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
-                    <div className="p-2.5 bg-white rounded-full border border-neutral-100 shadow-sm text-primary">
+                  <div className="bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                    <input 
+                      type="file" 
+                      accept=".pdf,.jpg,.jpeg,.png" 
+                      onChange={(e) => handleFileChange(e, 'aadhaar')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      title="Drag and drop or click to upload"
+                    />
+                    <div className="p-2.5 bg-white rounded-full border border-neutral-100 shadow-sm text-primary group-hover:scale-110 transition-transform">
                       <FileText size={18} />
                     </div>
                     <div>
@@ -632,23 +684,26 @@ export default function SellerRegister() {
                       <span className="text-[8px] font-semibold text-neutral-400 block mt-0.5">Government ID Verification</span>
                     </div>
                     {formData.aadhaarFile ? (
-                      <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-[9px] font-bold">
+                      <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-[9px] font-bold z-20 relative">
                         <Check size={10} /> {formData.aadhaarFile}
                       </div>
                     ) : (
-                      <button
-                        type="button"
-                        onClick={() => handleFileUpload('aadhaar', 'aadhaar_scan.pdf')}
-                        className="w-full py-1.5 border border-neutral-200 bg-white hover:bg-neutral-50 text-[10px] font-bold text-neutral-600 rounded-lg flex items-center justify-center gap-1 transition-colors"
-                      >
-                        <Upload size={10} /> {uploadProgress.aadhaar > 0 ? `${uploadProgress.aadhaar}%` : 'Upload Scan'}
-                      </button>
+                      <div className="w-full py-1.5 border border-neutral-200 bg-white group-hover:bg-neutral-50 text-[10px] font-bold text-neutral-600 rounded-lg flex items-center justify-center gap-1 transition-colors z-20 relative pointer-events-none">
+                        <Upload size={10} /> {uploadProgress.aadhaar > 0 ? `${uploadProgress.aadhaar}%` : 'Browse or Drag File'}
+                      </div>
                     )}
                   </div>
 
                   {/* Document PAN */}
-                  <div className="bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
-                    <div className="p-2.5 bg-white rounded-full border border-neutral-100 shadow-sm text-primary">
+                  <div className="bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                    <input 
+                      type="file" 
+                      accept=".pdf,.jpg,.jpeg,.png" 
+                      onChange={(e) => handleFileChange(e, 'pan')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      title="Drag and drop or click to upload"
+                    />
+                    <div className="p-2.5 bg-white rounded-full border border-neutral-100 shadow-sm text-primary group-hover:scale-110 transition-transform">
                       <FileText size={18} />
                     </div>
                     <div>
@@ -656,23 +711,26 @@ export default function SellerRegister() {
                       <span className="text-[8px] font-semibold text-neutral-400 block mt-0.5">Tax Account Card Scan</span>
                     </div>
                     {formData.panFile ? (
-                      <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-[9px] font-bold">
+                      <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-[9px] font-bold z-20 relative">
                         <Check size={10} /> {formData.panFile}
                       </div>
                     ) : (
-                      <button
-                        type="button"
-                        onClick={() => handleFileUpload('pan', 'pan_card_scan.pdf')}
-                        className="w-full py-1.5 border border-neutral-200 bg-white hover:bg-neutral-50 text-[10px] font-bold text-neutral-600 rounded-lg flex items-center justify-center gap-1 transition-colors"
-                      >
-                        <Upload size={10} /> {uploadProgress.pan > 0 ? `${uploadProgress.pan}%` : 'Upload Scan'}
-                      </button>
+                      <div className="w-full py-1.5 border border-neutral-200 bg-white group-hover:bg-neutral-50 text-[10px] font-bold text-neutral-600 rounded-lg flex items-center justify-center gap-1 transition-colors z-20 relative pointer-events-none">
+                        <Upload size={10} /> {uploadProgress.pan > 0 ? `${uploadProgress.pan}%` : 'Browse or Drag File'}
+                      </div>
                     )}
                   </div>
 
                   {/* Document Shop License */}
-                  <div className="bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3">
-                    <div className="p-2.5 bg-white rounded-full border border-neutral-100 shadow-sm text-primary">
+                  <div className="bg-neutral-50 border border-dashed border-neutral-200 rounded-2xl p-4 flex flex-col justify-between items-center text-center gap-3 relative overflow-hidden group hover:border-primary/50 transition-colors">
+                    <input 
+                      type="file" 
+                      accept=".pdf,.jpg,.jpeg,.png" 
+                      onChange={(e) => handleFileChange(e, 'license')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      title="Drag and drop or click to upload"
+                    />
+                    <div className="p-2.5 bg-white rounded-full border border-neutral-100 shadow-sm text-primary group-hover:scale-110 transition-transform">
                       <FileText size={18} />
                     </div>
                     <div>
@@ -680,17 +738,13 @@ export default function SellerRegister() {
                       <span className="text-[8px] font-semibold text-neutral-400 block mt-0.5">FSSAI / Municipal Trade Permit</span>
                     </div>
                     {formData.licenseFile ? (
-                      <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-[9px] font-bold">
+                      <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full text-[9px] font-bold z-20 relative">
                         <Check size={10} /> {formData.licenseFile}
                       </div>
                     ) : (
-                      <button
-                        type="button"
-                        onClick={() => handleFileUpload('license', 'trade_license.pdf')}
-                        className="w-full py-1.5 border border-neutral-200 bg-white hover:bg-neutral-50 text-[10px] font-bold text-neutral-600 rounded-lg flex items-center justify-center gap-1 transition-colors"
-                      >
-                        <Upload size={10} /> {uploadProgress.license > 0 ? `${uploadProgress.license}%` : 'Upload Scan'}
-                      </button>
+                      <div className="w-full py-1.5 border border-neutral-200 bg-white group-hover:bg-neutral-50 text-[10px] font-bold text-neutral-600 rounded-lg flex items-center justify-center gap-1 transition-colors z-20 relative pointer-events-none">
+                        <Upload size={10} /> {uploadProgress.license > 0 ? `${uploadProgress.license}%` : 'Browse or Drag File'}
+                      </div>
                     )}
                   </div>
                 </div>

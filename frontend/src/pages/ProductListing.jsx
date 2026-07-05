@@ -54,7 +54,7 @@ export default function ProductListing() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const [maxPrice, setMaxPrice] = useState(20);
+  const [maxPrice, setMaxPrice] = useState(1000);
   const [selectedRating, setSelectedRating] = useState(0);
 
   const sliderRef = useRef(null);
@@ -262,8 +262,8 @@ export default function ProductListing() {
               <input
                 type="range"
                 min="0"
-                max="20"
-                step="0.5"
+                max="1000"
+                step="10"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full h-1.5 bg-neutral-100 rounded-lg appearance-none cursor-pointer accent-primary"
@@ -373,7 +373,7 @@ export default function ProductListing() {
               <button
                 onClick={() => {
                   setSearchParams({});
-                  setMaxPrice(20);
+                  setMaxPrice(1000);
                   setSelectedRating(0);
                 }}
                 className="mt-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold text-sm transition-colors"

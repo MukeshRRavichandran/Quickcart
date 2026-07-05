@@ -43,6 +43,8 @@ export default function AdminLayout({ children }) {
     navigate('/admin/login');
   };
 
+  const isSellerVerificationPage = location.pathname.startsWith('/admin/sellers/') && location.pathname !== '/admin/sellers';
+
   const pathParts = location.pathname.split('/').filter(Boolean);
   const breadcrumbs = pathParts.map((part, index) => {
     const path = '/' + pathParts.slice(0, index + 1).join('/');
@@ -142,14 +144,16 @@ export default function AdminLayout({ children }) {
               <Menu size={20} />
             </button>
 
-            <div className="hidden sm:flex items-center flex-grow relative">
-              <input
-                type="text"
-                placeholder="Search resources, products, orders..."
-                className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-transparent rounded-full focus:bg-white focus:border-primary/20 outline-none text-xs sm:text-sm text-neutral-700 transition-all duration-200"
-              />
-              <Search size={16} className="absolute left-3.5 text-neutral-400" />
-            </div>
+            {!isSellerVerificationPage && (
+              <div className="hidden sm:flex items-center flex-grow relative">
+                <input
+                  type="text"
+                  placeholder="Search resources, products, orders..."
+                  className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-transparent rounded-full focus:bg-white focus:border-primary/20 outline-none text-xs sm:text-sm text-neutral-700 transition-all duration-200"
+                />
+                <Search size={16} className="absolute left-3.5 text-neutral-400" />
+              </div>
+            )}
           </div>
 
           {/* Action elements */}

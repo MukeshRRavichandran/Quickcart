@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
 import Products from './pages/Products';
 import Sellers from './pages/Sellers';
+import SellerDetails from './pages/SellerDetails';
 import Customers from './pages/Customers';
 import Orders from './pages/Orders';
 import Inventory from './pages/Inventory';
@@ -60,7 +61,7 @@ function AppContent() {
           <Route path="/admin/products/add" element={<Products />} />
           <Route path="/admin/products/edit/:id" element={<Products />} />
           <Route path="/admin/sellers" element={<Sellers />} />
-          <Route path="/admin/sellers/:id" element={<Sellers />} />
+          <Route path="/admin/sellers/:id" element={<SellerDetails />} />
           <Route path="/admin/customers" element={<Customers />} />
           <Route path="/admin/orders" element={<Orders />} />
           <Route path="/admin/orders/:id" element={<Orders />} />

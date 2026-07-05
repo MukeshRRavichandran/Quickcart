@@ -111,7 +111,15 @@ export const AdminProvider = ({ children }) => {
           verificationStatus: s.isApproved ? 'Approved' : (s.isBlocked ? 'Rejected' : 'Pending'),
           status: s.isBlocked ? 'Suspended' : 'Active',
           productsCount: 0,
-          earnings: 0.00
+          earnings: 0.00,
+          gstin: s.gstin || 'Not Provided',
+          bankName: s.bankName || 'Not Provided',
+          bankAccount: s.bankAccount || 'Not Provided',
+          routingNumber: s.routingNumber || 'Not Provided',
+          address: s.address || { address: 'Not Provided', city: '', state: '', zipCode: '' },
+          aadhaarFile: s.aadhaarFile || '',
+          panFile: s.panFile || '',
+          licenseFile: s.licenseFile || ''
         })));
 
         setCustomers(allUsers.filter(u => u.role === 'customer').map(c => ({

@@ -33,7 +33,7 @@ const formatUser = (user, token) => ({
 // POST /api/auth/register
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role, storeName } = req.body;
+    const { name, email, password, role, storeName, gstin, bankName, bankAccount, routingNumber, phone, address, aadhaarFile, panFile, licenseFile } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email and password are required' });
@@ -44,7 +44,23 @@ export const registerUser = async (req, res) => {
 
     const isApproved = role === 'seller' ? false : true;
 
-    const user = await User.create({ name, email, password, role: role || 'customer', storeName: storeName || '', isApproved });
+    const user = await User.create({ 
+      name, 
+      email, 
+      password, 
+      role: role || 'customer', 
+      storeName: storeName || '', 
+      isApproved,
+      gstin: gstin || '',
+      bankName: bankName || '',
+      bankAccount: bankAccount || '',
+      routingNumber: routingNumber || '',
+      phone: phone || '',
+      address: address || {},
+      aadhaarFile: aadhaarFile || '',
+      panFile: panFile || '',
+      licenseFile: licenseFile || ''
+    });
 
     // Bootstrap cart and wishlist for every new user
     await Promise.all([

@@ -86,10 +86,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password, role = 'customer', storeName = '') => {
+  const register = async (name, email, password, role = 'customer', storeName = '', extraData = {}) => {
     setError(null);
     try {
-      const data = await authAPI.register(name, email, password, role, storeName);
+      const data = await authAPI.register(name, email, password, role, storeName, extraData);
       if (role === 'seller') {
         return { ...data, pendingApproval: true };
       }
