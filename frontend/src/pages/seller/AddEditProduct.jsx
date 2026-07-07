@@ -9,6 +9,7 @@ export default function AddEditProduct() {
   const { products, addProduct, editProduct } = useSeller();
 
   const isEditMode = Boolean(id);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Form State
   const [step, setStep] = useState(1);
@@ -38,7 +39,6 @@ export default function AddEditProduct() {
     'Bakery',
     'Snacks & Biscuits',
     'Beverages',
-    'Instant, Ready-to-Cook & Ready-to-Eat',
     'Meat, Fish & Seafood',
     'Sweets, Chocolates & Desserts'
   ];
@@ -53,13 +53,14 @@ export default function AddEditProduct() {
   ];
 
   useEffect(() => {
-    if (isEditMode) {
+    if (isEditMode && !isLoaded) {
       const existing = products.find((p) => p.id === id);
       if (existing) {
         setFormData(existing);
+        setIsLoaded(true);
       }
     }
-  }, [id, isEditMode, products]);
+  }, [id, isEditMode, products, isLoaded]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -69,24 +70,29 @@ export default function AddEditProduct() {
     }));
   };
 
-  const handleSave = (status = 'Active') => {
-    const finalData = { ...formData, status };
-    if (isEditMode) {
-      editProduct(id, finalData);
-      setToastMessage('Product updated successfully!');
-    } else {
-      addProduct(finalData);
-      setToastMessage('Product added successfully!');
-    }
+  const handleSave = async (status = 'Active') => {
+    try {
+      const finalData = { ...formData, status, isActive: status === 'Active' };
+      if (isEditMode) {
+        await editProduct(id, finalData);
+        setToastMessage('Product updated successfully!');
+      } else {
+        await addProduct(finalData);
+        setToastMessage('Product added successfully!');
+      }
 
-    setTimeout(() => {
-      navigate('/seller/products');
-    }, 1500);
+      setTimeout(() => {
+        navigate('/seller/products');
+      }, 1500);
+    } catch (error) {
+      console.error(error);
+      setToastMessage('Error saving product!');
+    }
   };
 
   return (
     <div className="space-y-6 text-left relative">
-      
+
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed top-24 right-6 bg-neutral-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 z-50 animate-bounce">
@@ -115,10 +121,10 @@ export default function AddEditProduct() {
 
       {/* Grid container with Steps Form & Live Preview */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        
+
         {/* Form area */}
         <div className="lg:col-span-2 space-y-6">
-          
+
           {/* Step header buttons */}
           <div className="bg-white border border-neutral-100 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-2">
             {[
@@ -133,17 +139,15 @@ export default function AddEditProduct() {
                 <button
                   key={s.num}
                   onClick={() => setStep(s.num)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
-                    isCurrent 
-                      ? 'bg-primary/10 text-primary' 
-                      : isPast 
-                      ? 'text-emerald-600 hover:bg-neutral-50' 
-                      : 'text-neutral-400 hover:bg-neutral-50'
-                  }`}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${isCurrent
+                      ? 'bg-primary/10 text-primary'
+                      : isPast
+                        ? 'text-emerald-600 hover:bg-neutral-50'
+                        : 'text-neutral-400 hover:bg-neutral-50'
+                    }`}
                 >
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
-                    isCurrent ? 'bg-primary text-white' : isPast ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-100 text-neutral-400'
-                  }`}>
+                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${isCurrent ? 'bg-primary text-white' : isPast ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-100 text-neutral-400'
+                    }`}>
                     {isPast ? <Check size={10} /> : s.num}
                   </span>
                   <span className="hidden sm:inline">{s.label}</span>
@@ -154,7 +158,7 @@ export default function AddEditProduct() {
 
           {/* Form Content Cards */}
           <div className="bg-white border border-neutral-100 rounded-3xl p-6 shadow-sm space-y-6">
-            
+
             {step === 1 && (
               <div className="space-y-4">
                 <h3 className="font-outfit font-extrabold text-base text-neutral-800 border-b border-neutral-50 pb-2 flex items-center gap-2">
@@ -276,22 +280,22 @@ export default function AddEditProduct() {
                       name="price"
                       value={formData.price}
                       onChange={handleChange}
-                      min="0.01"
-                      step="0.01"
+                      min="1"
+                      step="1"
                       className="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:border-primary/20 outline-none text-xs sm:text-sm text-neutral-700 transition-all font-bold"
                       required
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-neutral-500 block">Original Price (Before discount, $) *</label>
+                    <label className="text-xs font-bold text-neutral-500 block">Original Price (Before discount, ₹) *</label>
                     <input
                       type="number"
                       name="originalPrice"
                       value={formData.originalPrice}
                       onChange={handleChange}
-                      min="0.01"
-                      step="0.01"
+                      min="1"
+                      step="1"
                       className="w-full px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:border-primary/20 outline-none text-xs sm:text-sm text-neutral-700 transition-all font-bold"
                       required
                     />
@@ -377,7 +381,7 @@ export default function AddEditProduct() {
               >
                 Previous Step
               </button>
-              
+
               {step < 3 ? (
                 <button
                   type="button"
@@ -422,7 +426,7 @@ export default function AddEditProduct() {
 
           {/* ProductCard simulation matching customer portal styles! */}
           <div className="border border-neutral-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all group flex flex-col justify-between max-w-[240px] mx-auto text-left relative">
-            
+
             {/* Badges */}
             <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
               {formData.isOrganic && (
@@ -439,8 +443,8 @@ export default function AddEditProduct() {
 
             {/* Product image container */}
             <div className="aspect-[4/3] bg-neutral-50 p-3 flex items-center justify-center overflow-hidden border-b border-neutral-50">
-              <img 
-                src={formData.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80'} 
+              <img
+                src={formData.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80'}
                 alt="Organic Product"
                 className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
               />
@@ -459,10 +463,10 @@ export default function AddEditProduct() {
               {/* Price & Add block */}
               <div className="flex items-center justify-between pt-1">
                 <div>
-                  <span className="font-outfit font-extrabold text-sm text-neutral-800">${(formData.price || 0).toFixed(2)}</span>
+                  <span className="font-outfit font-extrabold text-sm text-neutral-800">₹{(formData.price || 0).toFixed(2)}</span>
                   {formData.originalPrice > formData.price && (
                     <span className="text-[10px] text-neutral-400 line-through ml-1.5 font-semibold">
-                      ${(formData.originalPrice || 0).toFixed(2)}
+                      ₹{(formData.originalPrice || 0).toFixed(2)}
                     </span>
                   )}
                 </div>

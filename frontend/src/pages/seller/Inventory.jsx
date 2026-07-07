@@ -10,9 +10,7 @@ export default function Inventory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [toastMessage, setToastMessage] = useState('');
 
-  const itemsPerPage = 6;
-
-  const categories = ['All', 'Fruits & Vegetables', 'Dairy & Eggs', 'Rice, Atta & Grains', 'Spices, Oils & Cooking Essentials', 'Bakery', 'Snacks & Biscuits', 'Beverages', 'Instant, Ready-to-Cook & Ready-to-Eat', 'Meat, Fish & Seafood', 'Sweets, Chocolates & Desserts'];
+  const categories = ['All', 'Fruits & Vegetables', 'Dairy & Eggs', 'Rice, Atta & Grains', 'Spices, Oils & Cooking Essentials', 'Bakery', 'Snacks & Biscuits', 'Beverages', 'Meat, Fish & Seafood', 'Sweets, Chocolates & Desserts'];
 
   // Calculations
   const totalStockUnits = products.reduce((acc, p) => acc + p.stock, 0);

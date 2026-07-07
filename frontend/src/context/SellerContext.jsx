@@ -127,7 +127,7 @@ export const SellerProvider = ({ children }) => {
   const [offers, setOffers] = useState([
     { id: 'OFF-001', code: 'FRESH20', name: 'Grand Reopening Special', type: 'Percentage', value: 20, status: 'Active', startDate: '2026-06-01', endDate: '2026-07-31' },
     { id: 'OFF-002', code: 'FRESH10', name: 'Weekly Newsletter Offer', type: 'Percentage', value: 10, status: 'Active', startDate: '2026-06-15', endDate: '2026-07-15' },
-    { id: 'OFF-003', code: 'FREESHIP50', name: 'Free Shipping Over $50', type: 'Free Shipping', value: 0, status: 'Active', startDate: '2026-05-01', endDate: '2026-08-01' }
+    { id: 'OFF-003', code: 'FREESHIP50', name: 'Free Shipping Over ₹50', type: 'Free Shipping', value: 0, status: 'Active', startDate: '2026-05-01', endDate: '2026-08-01' }
   ]);
 
   // Mock Chats/Messages threads
@@ -147,7 +147,7 @@ export const SellerProvider = ({ children }) => {
     }
   ]);
 
-  const { user } = useAuth();
+  const { sellerUser: user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
@@ -168,6 +168,23 @@ export const SellerProvider = ({ children }) => {
 
           const earns = await sellerAPI.getEarnings();
           setEarnings(earns);
+
+          const ords = await sellerAPI.getOrders();
+          setOrders(ords.map(o => ({
+            id: o._id,
+            customer: { 
+              name: o.user?.name || 'Guest', 
+              email: o.user?.email || '', 
+              phone: o.shippingAddress?.phone || 'N/A', 
+              address: o.shippingAddress?.address || 'N/A' 
+            },
+            items: o.items.map(i => ({ product: i.name || 'Unknown Item', quantity: i.quantity, price: i.price })),
+            amount: o.items.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+            paymentStatus: o.paymentStatus || 'Paid',
+            deliveryStatus: (o.status === 'Pending' ? 'New' : o.status) || 'New',
+            orderDate: new Date(o.createdAt || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+            timeAgo: ''
+          })));
 
           const revs = await reviewsAPI.getSellerReviews();
           setReviews(revs);
@@ -256,7 +273,7 @@ export const SellerProvider = ({ children }) => {
     try {
       const data = await sellerAPI.updateOrderStatus(id, status);
       setOrders((prev) =>
-        prev.map((o) => (o.id === id ? { ...o, deliveryStatus: data.status } : o))
+        prev.map((o) => (o.id === id ? { ...o, deliveryStatus: data.status === 'Pending' ? 'New' : data.status } : o))
       );
     } catch (err) {
       console.error(err);

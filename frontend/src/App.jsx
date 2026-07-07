@@ -70,10 +70,10 @@ function ProtectedRoute({ children }) {
 
 // Seller Protected Route Wrapper
 function SellerProtectedRoute({ children }) {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { sellerUser, sellerIsAuthenticated, sellerLoading } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  if (sellerLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50">
         <div className="flex flex-col items-center gap-3">
@@ -84,7 +84,7 @@ function SellerProtectedRoute({ children }) {
     );
   }
 
-  if (!isAuthenticated || user?.role !== 'seller') {
+  if (!sellerIsAuthenticated || sellerUser?.role !== 'seller') {
     return <Navigate to="/seller/login" state={{ from: location }} replace />;
   }
 
@@ -93,44 +93,44 @@ function SellerProtectedRoute({ children }) {
 
 function AppContent() {
   const location = useLocation();
-  const isSellerRoute = (location.pathname.startsWith('/seller/') || location.pathname === '/seller') && 
-                        location.pathname !== '/seller/login';
+  const isSellerRoute = (location.pathname.startsWith('/seller/') || location.pathname === '/seller') &&
+    location.pathname !== '/seller/login';
 
   if (isSellerRoute) {
     return (
       <SellerProtectedRoute>
         <SellerProvider>
           <SellerLayout>
-          <Routes>
-            <Route path="/seller" element={<Navigate to="/seller/dashboard" replace />} />
-            <Route path="/seller/dashboard" element={<Dashboard />} />
-            <Route path="/seller/products" element={<Products />} />
-            <Route path="/seller/products/add" element={<AddEditProduct />} />
-            <Route path="/seller/products/edit/:id" element={<AddEditProduct />} />
-            <Route path="/seller/inventory" element={<Inventory />} />
-            <Route path="/seller/orders" element={<Orders />} />
-            <Route path="/seller/orders/:id" element={<OrderDetail />} />
-            <Route path="/seller/customers" element={<Customers />} />
-            <Route path="/seller/reviews" element={<Reviews />} />
-            <Route path="/seller/offers" element={<Offers />} />
-            <Route path="/seller/analytics" element={<Analytics />} />
-            <Route path="/seller/earnings" element={<Earnings />} />
-            <Route path="/seller/messages" element={<Messages />} />
-            <Route path="/seller/notifications" element={<Notifications />} />
-            <Route path="/seller/profile" element={<ProfileStore />} />
-            <Route path="/seller/settings" element={<SettingsPage />} />
-            <Route path="/seller/help" element={<Help />} />
-            <Route path="/seller/*" element={<NotFound />} />
-          </Routes>
-        </SellerLayout>
-      </SellerProvider>
+            <Routes>
+              <Route path="/seller" element={<Navigate to="/seller/dashboard" replace />} />
+              <Route path="/seller/dashboard" element={<Dashboard />} />
+              <Route path="/seller/products" element={<Products />} />
+              <Route path="/seller/products/add" element={<AddEditProduct />} />
+              <Route path="/seller/products/edit/:id" element={<AddEditProduct />} />
+              <Route path="/seller/inventory" element={<Inventory />} />
+              <Route path="/seller/orders" element={<Orders />} />
+              <Route path="/seller/orders/:id" element={<OrderDetail />} />
+              <Route path="/seller/customers" element={<Customers />} />
+              <Route path="/seller/reviews" element={<Reviews />} />
+              <Route path="/seller/offers" element={<Offers />} />
+              <Route path="/seller/analytics" element={<Analytics />} />
+              <Route path="/seller/earnings" element={<Earnings />} />
+              <Route path="/seller/messages" element={<Messages />} />
+              <Route path="/seller/notifications" element={<Notifications />} />
+              <Route path="/seller/profile" element={<ProfileStore />} />
+              <Route path="/seller/settings" element={<SettingsPage />} />
+              <Route path="/seller/help" element={<Help />} />
+              <Route path="/seller/*" element={<NotFound />} />
+            </Routes>
+          </SellerLayout>
+        </SellerProvider>
       </SellerProtectedRoute>
     );
   }
 
   return (
     <div className="flex flex-col min-h-screen">
-      
+
       {/* Sticky Header */}
       <Navbar />
 
@@ -148,37 +148,37 @@ function AppContent() {
 
           {/* Protected Routes */}
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route 
-            path="/cart" 
+          <Route
+            path="/cart"
             element={
               <ProtectedRoute>
                 <Cart />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/checkout" 
+          <Route
+            path="/checkout"
             element={
               <ProtectedRoute>
                 <Checkout />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/order-confirmation/:id" 
+          <Route
+            path="/order-confirmation/:id"
             element={
               <ProtectedRoute>
                 <OrderConfirmation />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/profile" 
+          <Route
+            path="/profile"
             element={
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
-            } 
+            }
           />
 
           {/* Catch-all Redirect */}

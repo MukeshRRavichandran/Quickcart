@@ -97,7 +97,7 @@ export default function Analytics() {
                       className="transition-all hover:fill-emerald-600 cursor-pointer"
                     />
                     <text x={x + barWidth / 2} y={y - 6} fill="#71717a" fontSize="8" fontWeight="bold" textAnchor="middle">
-                      ${Math.floor(item.sales)}
+                      ₹{Math.floor(item.sales)}
                     </text>
                   </g>
                 );

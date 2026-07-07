@@ -4,26 +4,26 @@ import { Search, ChevronRight, SlidersHorizontal, Info, Star } from 'lucide-reac
 import { productsAPI, categoriesAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
 
-const defaultCategoriesList = [
+const categories = [
   {
     name: 'Fruits & Vegetables',
-    image: 'https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/736x/52/df/27/52df270aa6617ff23841fcf1a0b6584d.jpg',
   },
   {
     name: 'Dairy & Eggs',
-    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/736x/96/87/22/968722112f5f58025f5feae9df702a71.jpg',
   },
   {
     name: 'Rice, Atta & Grains',
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/1200x/4b/0f/dd/4b0fdddda16cb10c5a3a567703d508fa.jpg',
   },
   {
     name: 'Spices, Oils & Cooking Essentials',
-    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/1200x/51/94/7d/51947db7a9e4faa5764de43a6da9a634.jpg',
   },
   {
     name: 'Bakery',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/736x/5f/da/63/5fda63032f233de7fc99a970eac1c0c7.jpg',
   },
   {
     name: 'Snacks & Biscuits',
@@ -31,24 +31,20 @@ const defaultCategoriesList = [
   },
   {
     name: 'Beverages',
-    image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=200&auto=format&fit=crop&q=80',
-  },
-  {
-    name: 'Instant, Ready-to-Cook & Ready-to-Eat',
-    image: 'https://images.unsplash.com/photo-1626200419199-391ae4cd7a41?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/1200x/8d/1e/b0/8d1eb0e0ccbe6a055d1076bfcb317464.jpg',
   },
   {
     name: 'Meat, Fish & Seafood',
-    image: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/736x/25/36/a5/2536a53ee64eaa4da8699936863897f3.jpg',
   },
   {
     name: 'Sweets, Chocolates & Desserts',
-    image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=200&auto=format&fit=crop&q=80',
+    image: 'https://i.pinimg.com/1200x/c5/50/37/c550377d2f5f3fff665ae24c2455487b.jpg',
   },
 ];
 
 export default function ProductListing() {
-  const [categoriesList, setCategoriesList] = useState(defaultCategoriesList);
+  const [categoriesList, setCategoriesList] = useState(categories);
   const [searchParams, setSearchParams] = useSearchParams();
   const [rawProducts, setRawProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -269,7 +265,7 @@ export default function ProductListing() {
                 className="w-full h-1.5 bg-neutral-100 rounded-lg appearance-none cursor-pointer accent-primary"
               />
               <div className="flex justify-between items-center text-xs font-semibold text-neutral-500">
-                <span>Min: $0.00</span>
+                <span>Min: ₹0.00</span>
                 <span className="text-primary font-bold">Max: ₹{maxPrice.toFixed(2)}</span>
               </div>
             </div>
@@ -356,7 +352,7 @@ export default function ProductListing() {
 
           {/* Grid Render */}
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 animate-pulse">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 animate-pulse">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="h-80 bg-neutral-100 rounded-2xl"></div>
               ))}
@@ -382,7 +378,7 @@ export default function ProductListing() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6">
               {products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}

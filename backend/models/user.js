@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     isApproved:    { type: Boolean, default: true },
     // Seller-specific profile fields
     phone:         { type: String, default: '' },
+    shopAddress:   { type: String, default: '' },
     hours:         { type: String, default: '' },
     description:   { type: String, default: '' },
     logo:          { type: String, default: '' },

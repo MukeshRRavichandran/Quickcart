@@ -17,6 +17,7 @@ export const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`;
   const config = {
     ...options,
+    cache: options.cache || 'no-store',
     headers: {
       ...getHeaders(),
       ...options.headers,

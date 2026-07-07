@@ -19,11 +19,11 @@ export default function Dashboard() {
   const storeViews = 2845;
 
   const metrics = [
-    { label: 'Total Sales', value: `₹₹{totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, trend: '▲ 18.6% vs last week', icon: ShoppingBag, color: 'text-emerald-500 bg-emerald-50' },
-    { label: 'Total Orders', value: totalOrdersCount, trend: '▲ 12.4% vs last week', icon: ClipboardList, color: 'text-blue-500 bg-blue-50' },
-    { label: 'Pending Orders', value: pendingOrdersCount, trend: '▼ 8.3% vs last week', icon: AlertTriangle, color: 'text-amber-500 bg-amber-50', isWarning: true },
-    { label: 'Products', value: productsCount, trend: '▲ 5.7% vs last week', icon: ShoppingBag, color: 'text-indigo-500 bg-indigo-50' },
-    { label: 'Store Views', value: storeViews.toLocaleString(), trend: '▲ 21.3% vs last week', icon: Eye, color: 'text-purple-500 bg-purple-50' },
+    { label: 'Total Sales', value: `₹${totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, trend: '▲ 18.6% vs last week', icon: ShoppingBag, color: 'text-primary bg-primary-light/30' },
+    { label: 'Total Orders', value: totalOrdersCount, trend: '▲ 12.4% vs last week', icon: ClipboardList, color: 'text-blue-700 bg-blue-100' },
+    { label: 'Pending Orders', value: pendingOrdersCount, trend: '▼ 8.3% vs last week', icon: AlertTriangle, color: 'text-amber-700 bg-amber-100', isWarning: true },
+    { label: 'Products', value: productsCount, trend: '▲ 5.7% vs last week', icon: ShoppingBag, color: 'text-indigo-700 bg-indigo-100' },
+    { label: 'Store Views', value: storeViews.toLocaleString(), trend: '▲ 21.3% vs last week', icon: Eye, color: 'text-purple-700 bg-purple-100' },
   ];
 
   // Top selling products sorted
@@ -76,7 +76,7 @@ export default function Dashboard() {
               <div>
                 <h3 className="font-outfit font-extrabold text-xl sm:text-2xl text-neutral-800">{m.value}</h3>
                 <span className={`text-[10px] font-bold flex items-center gap-0.5 mt-1.5 ${
-                  isNegative ? 'text-red-500' : 'text-emerald-500'
+                  isNegative ? 'text-red-700' : 'text-emerald-700'
                 }`}>
                   {isNegative ? <ArrowDownRight size={10} /> : <ArrowUpRight size={10} />}
                   {m.trend}
@@ -145,7 +145,7 @@ export default function Dashboard() {
                 
                 {/* Tooltip box */}
                 <rect x="150" y="30" width="100" height="36" rx="6" fill="#1e293b" />
-                <text x="200" y="46" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">$1,240.50</text>
+                <text x="200" y="46" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">₹1,240.50</text>
                 <text x="200" y="58" fill="#94a3b8" fontSize="7" textAnchor="middle">03 Jul, 2025</text>
               </g>
             </svg>
@@ -181,15 +181,15 @@ export default function Dashboard() {
               <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#f1f5f9" strokeWidth="3" />
                 {/* New: 18.8% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#60a5fa" strokeWidth="3.2" strokeDasharray="18.8 81.2" strokeDashoffset="0" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#a7f3d0" strokeWidth="3.2" strokeDasharray="18.8 81.2" strokeDashoffset="0" />
                 {/* Processing: 25% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#f59e0b" strokeWidth="3.2" strokeDasharray="25 75" strokeDashoffset="-18.8" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#6ee7b7" strokeWidth="3.2" strokeDasharray="25 75" strokeDashoffset="-18.8" />
                 {/* Packed: 21.9% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#818cf8" strokeWidth="3.2" strokeDasharray="21.9 78.1" strokeDashoffset="-43.8" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#34d399" strokeWidth="3.2" strokeDasharray="21.9 78.1" strokeDashoffset="-43.8" />
                 {/* Shipped: 23.4% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#c084fc" strokeWidth="3.2" strokeDasharray="23.4 76.6" strokeDashoffset="-65.7" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#10b981" strokeWidth="3.2" strokeDasharray="23.4 76.6" strokeDashoffset="-65.7" />
                 {/* Delivered: 10.9% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#10b981" strokeWidth="3.2" strokeDasharray="10.9 89.1" strokeDashoffset="-89.1" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#047857" strokeWidth="3.2" strokeDasharray="10.9 89.1" strokeDashoffset="-89.1" />
               </svg>
               {/* Center counter */}
               <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -201,23 +201,23 @@ export default function Dashboard() {
             {/* Donut Legend */}
             <div className="space-y-1.5 text-[9px] sm:text-xs font-semibold text-neutral-500 flex-grow text-left">
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-200" />
                 <span>New: 24 (18.8%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-300" />
                 <span>Processing: 32 (25.0%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-indigo-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                 <span>Packed: 28 (21.9%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-purple-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                 <span>Shipped: 30 (23.4%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-700" />
                 <span>Delivered: 14 (10.9%)</span>
               </div>
             </div>

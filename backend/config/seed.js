@@ -20,7 +20,6 @@ const categories = [
   { name: 'Bakery', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=150&auto=format&fit=crop&q=80', status: 'Active' },
   { name: 'Snacks & Biscuits', image: 'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=150&auto=format&fit=crop&q=80', status: 'Active' },
   { name: 'Beverages', image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=150&auto=format&fit=crop&q=80', status: 'Active' },
-  { name: 'Instant, Ready-to-Cook & Ready-to-Eat', image: 'https://images.unsplash.com/photo-1626200419199-391ae4cd7a41?w=150&auto=format&fit=crop&q=80', status: 'Active' },
   { name: 'Meat, Fish & Seafood', image: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=150&auto=format&fit=crop&q=80', status: 'Active' },
   { name: 'Sweets, Chocolates & Desserts', image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=150&auto=format&fit=crop&q=80', status: 'Active' }
 ];
@@ -431,50 +430,7 @@ const products = [
       vitaminK: '0% DV'
     }
   },
-  {
-    name: 'Organic Ramen Noodles',
-    description: 'Instant ready-to-cook whole-grain wheat ramen noodles with a savory veggie broth pack.',
-    price: 2.99,
-    originalPrice: 3.99,
-    category: 'Instant, Ready-to-Cook & Ready-to-Eat',
-    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&auto=format&fit=crop&q=80',
-    rating: 4.4,
-    reviewsCount: 38,
-    unit: '4 pack',
-    tags: ['Plant-Based'],
-    nutritionalFacts: {
-      calories: '280 kcal',
-      totalFat: '4.5g (6%)',
-      saturatedFat: '0.8g',
-      totalCarbohydrate: '52g (17%)',
-      dietaryFiber: '3g (12%)',
-      protein: '8g (16%)',
-      potassium: '140mg (4%)',
-      vitaminK: '0% DV'
-    }
-  },
-  {
-    name: 'Ready-to-Eat Tomato Soup',
-    description: 'Creamy tomato basil soup made with slow-roasted organic tomatoes. Just heat and serve.',
-    price: 1.80,
-    originalPrice: 2.50,
-    category: 'Instant, Ready-to-Cook & Ready-to-Eat',
-    image: 'https://images.unsplash.com/photo-1547592165-e1d17fed6006?w=600&auto=format&fit=crop&q=80',
-    rating: 4.5,
-    reviewsCount: 22,
-    unit: '12 oz can',
-    tags: ['Bestseller'],
-    nutritionalFacts: {
-      calories: '90 kcal',
-      totalFat: '2.5g (3%)',
-      saturatedFat: '1g',
-      totalCarbohydrate: '15g (5%)',
-      dietaryFiber: '2g (8%)',
-      protein: '2g (4%)',
-      potassium: '310mg (9%)',
-      vitaminK: '0% DV'
-    }
-  },
+
   {
     name: 'Fresh Atlantic Salmon Fillet',
     description: 'Premium, wild-caught skin-on salmon fillet. Extremely rich in Omega-3 fatty acids. Ideal for grilling or pan-searing.',

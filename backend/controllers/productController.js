@@ -33,7 +33,7 @@ export const getSellerProducts = async (req, res) => {
 // GET /api/products/:id  (public)
 export const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate('seller', 'name storeName');
+    const product = await Product.findById(req.params.id).populate('seller', 'name storeName shopAddress phone email');
     if (!product) return res.status(404).json({ message: 'Product not found' });
     return res.json(product);
   } catch (err) {
@@ -94,7 +94,7 @@ export const updateSellerProduct = async (req, res) => {
     } = req.body;
 
     let finalTags = Array.isArray(tags) ? [...tags] : [...(product.tags || [])];
-    if (isOrganic === true  && !finalTags.includes('Organic'))   finalTags.push('Organic');
+    if (isOrganic === true && !finalTags.includes('Organic')) finalTags.push('Organic');
     if (isOrganic === false) finalTags = finalTags.filter(t => t !== 'Organic');
     if (isFeatured === true) {
       if (!finalTags.includes('Bestseller')) finalTags.push('Bestseller');
@@ -102,17 +102,17 @@ export const updateSellerProduct = async (req, res) => {
     }
     if (isFeatured === false) finalTags = finalTags.filter(t => t !== 'Bestseller' && t !== 'Fresh Pick');
 
-    if (name !== undefined)          product.name          = name;
-    if (description !== undefined)   product.description   = description;
-    if (price !== undefined)         product.price         = Number(price);
+    if (name !== undefined) product.name = name;
+    if (description !== undefined) product.description = description;
+    if (price !== undefined) product.price = Number(price);
     if (originalPrice !== undefined) product.originalPrice = Number(originalPrice);
-    if (category !== undefined)      product.category      = category;
-    if (image !== undefined)         product.image         = image;
-    if (unit !== undefined)          product.unit          = unit;
-    if (stock !== undefined)         product.stock         = Number(stock);
-    if (sku !== undefined)           product.sku           = sku;
-    if (expiryDate !== undefined)    product.expiryDate    = expiryDate;
-    if (isActive !== undefined)      product.isActive      = Boolean(isActive);
+    if (category !== undefined) product.category = category;
+    if (image !== undefined) product.image = image;
+    if (unit !== undefined) product.unit = unit;
+    if (stock !== undefined) product.stock = Number(stock);
+    if (sku !== undefined) product.sku = sku || '';
+    if (expiryDate !== undefined) product.expiryDate = expiryDate || null;
+    if (isActive !== undefined) product.isActive = Boolean(isActive);
     product.tags = finalTags;
 
     const updated = await product.save();

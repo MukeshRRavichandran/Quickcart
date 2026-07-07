@@ -17,9 +17,7 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
-  const itemsPerPage = 5;
-
-  const categories = ['All', 'Fruits & Vegetables', 'Dairy & Eggs', 'Rice, Atta & Grains', 'Spices, Oils & Cooking Essentials', 'Bakery', 'Snacks & Biscuits', 'Beverages', 'Instant, Ready-to-Cook & Ready-to-Eat', 'Meat, Fish & Seafood', 'Sweets, Chocolates & Desserts'];
+  const categories = ['All', 'Fruits & Vegetables', 'Dairy & Eggs', 'Rice, Atta & Grains', 'Spices, Oils & Cooking Essentials', 'Bakery', 'Snacks & Biscuits', 'Beverages', 'Meat, Fish & Seafood', 'Sweets, Chocolates & Desserts'];
 
   // Filtered Products
   const filteredProducts = products.filter((p) => {
@@ -30,6 +28,7 @@ export default function Products() {
   });
 
   // Pagination
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,

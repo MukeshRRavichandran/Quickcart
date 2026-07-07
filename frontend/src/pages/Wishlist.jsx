@@ -240,7 +240,7 @@ export default function Wishlist() {
             </span>
             <h3 className="font-outfit font-extrabold text-base text-neutral-800">Free Delivery</h3>
             <p className="text-xs text-neutral-500 leading-relaxed">
-              Enjoy free home delivery on all grocery baskets totaling $50 or more. Freshness and quality checked, straight to your doorstep.
+              Enjoy free home delivery on all grocery baskets totaling ₹50 or more. Freshness and quality checked, straight to your doorstep.
             </p>
           </div>
           <Link

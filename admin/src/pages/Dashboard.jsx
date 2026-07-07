@@ -45,7 +45,7 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm flex items-center gap-4">
-          <div className="p-3 bg-blue-50 text-blue-500 rounded-xl">
+          <div className="p-3 bg-blue-100 text-blue-700 rounded-xl">
             <ClipboardList size={20} />
           </div>
           <div className="space-y-0.5">
@@ -55,22 +55,22 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm flex items-center gap-4">
-          <div className="p-3 bg-amber-50 text-amber-500 rounded-xl">
+          <div className="p-3 bg-amber-100 text-amber-700 rounded-xl">
             <ShieldAlert size={20} />
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Pending Approvals</span>
-            <h3 className="font-outfit font-extrabold text-xl text-amber-500">{pendingApprovalsCount} tasks</h3>
+            <h3 className="font-outfit font-extrabold text-xl text-amber-700">{pendingApprovalsCount} tasks</h3>
           </div>
         </div>
 
         <div className="bg-white border border-neutral-100 rounded-2xl p-5 shadow-sm flex items-center gap-4">
-          <div className="p-3 bg-red-50 text-red-500 rounded-xl">
+          <div className="p-3 bg-red-100 text-red-700 rounded-xl">
             <AlertTriangle size={20} />
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Low Stock Alerts</span>
-            <h3 className="font-outfit font-extrabold text-xl text-red-500">{lowStockCount} items</h3>
+            <h3 className="font-outfit font-extrabold text-xl text-red-700">{lowStockCount} items</h3>
           </div>
         </div>
 

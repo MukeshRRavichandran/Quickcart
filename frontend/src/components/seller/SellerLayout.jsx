@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, ShoppingBag, Box, ClipboardList, Users, 
-  Star, Tag, BarChart3, Wallet, MessageSquare, Bell, 
-  User, Settings, HelpCircle, LogOut, Menu, X, Search, ChevronDown, CheckCircle
+import {
+  LayoutDashboard, ShoppingBag, Box, ClipboardList, Users,
+  Star, Tag, BarChart3, Wallet, MessageSquare, Bell,
+  User, Settings, HelpCircle, LogOut, Menu, X, Search, ChevronDown, CheckCircle, ShoppingCart
 } from 'lucide-react';
 import { useSeller } from '../../context/SellerContext';
 import { useAuth } from '../../context/AuthContext';
@@ -52,23 +52,23 @@ export default function SellerLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-neutral-50 flex text-left font-outfit">
-      
+
       {/* Sidebar - Mobile overlay backdrop */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-neutral-900/40 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Fixed left Sidebar drawer */}
-      <aside className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-white border-r border-neutral-100 flex flex-col justify-between transition-transform duration-300 lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        
+      <aside className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-white border-r border-neutral-100 flex flex-col justify-between transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
+
         {/* Brand Header */}
         <div className="h-20 px-6 border-b border-neutral-50 flex items-center justify-between">
           <Link to="/seller/dashboard" className="flex items-center gap-2">
+            <ShoppingCart size={24} className="text-primary" />
             <span className="font-outfit font-extrabold text-lg text-primary">
               Quick<span className="text-primary-darker">cart</span>
             </span>
@@ -86,17 +86,16 @@ export default function SellerLayout({ children }) {
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/seller/dashboard' && location.pathname.startsWith(item.path));
             const Icon = item.icon;
-            
+
             return (
               <Link
                 key={item.label}
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-primary/10 text-primary shadow-sm shadow-primary/5' 
-                    : 'text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50'
-                }`}
+                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${isActive
+                  ? 'bg-primary/10 text-primary shadow-sm shadow-primary/5'
+                  : 'text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50'
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon size={18} className={isActive ? 'text-primary' : 'text-neutral-400'} />
@@ -126,7 +125,7 @@ export default function SellerLayout({ children }) {
             <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-primary/5 rounded-full"></div>
             <h4 className="font-outfit font-extrabold text-xs text-neutral-800">Grow your business</h4>
             <p className="text-[10px] text-neutral-500 mt-1 leading-relaxed">Boost sales using custom campaign settings & offers.</p>
-            <Link 
+            <Link
               to="/seller/offers"
               className="mt-3 inline-block w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-xl text-xs font-bold transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg"
             >
@@ -139,13 +138,13 @@ export default function SellerLayout({ children }) {
 
       {/* Main Container */}
       <div className="flex-grow lg:pl-64 flex flex-col min-h-screen">
-        
+
         {/* Sticky Header Topbar */}
         <header className="sticky top-0 z-30 h-20 bg-white/95 backdrop-blur-md border-b border-neutral-100 flex items-center justify-between px-6 lg:px-8">
-          
+
           {/* Hamburger Menu & Search bar */}
           <div className="flex items-center gap-4 flex-grow max-w-lg">
-            <button 
+            <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-50 rounded-xl"
             >
@@ -165,14 +164,13 @@ export default function SellerLayout({ children }) {
 
           {/* User actions */}
           <div className="flex items-center gap-4">
-            
+
             {/* Notifications Bell Dropdown */}
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setNotiDropdownOpen(!notiDropdownOpen)}
-                className={`p-2.5 rounded-full transition-all duration-200 relative ${
-                  notiDropdownOpen ? 'bg-primary-light/45 text-primary' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700'
-                }`}
+                className={`p-2.5 rounded-full transition-all duration-200 relative ${notiDropdownOpen ? 'bg-primary-light/45 text-primary' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700'
+                  }`}
               >
                 <Bell size={20} />
                 {unreadNotifications.length > 0 && (
@@ -214,7 +212,7 @@ export default function SellerLayout({ children }) {
 
             {/* Profile Dropdown */}
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center gap-2.5 p-1 border border-neutral-200 rounded-full hover:border-primary/45 focus:outline-none transition-colors"
               >
@@ -235,31 +233,31 @@ export default function SellerLayout({ children }) {
                   <div className="px-4 py-2 text-xs font-semibold text-neutral-400 border-b border-neutral-50 uppercase tracking-wider">
                     Seller Account
                   </div>
-                  <Link 
-                    to="/seller/profile" 
+                  <Link
+                    to="/seller/profile"
                     onClick={() => setProfileDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-neutral-700 hover:bg-neutral-50 transition-colors font-bold"
                   >
                     <User size={16} className="text-neutral-400" />
                     Store Profile
                   </Link>
-                  <Link 
-                    to="/seller/settings" 
+                  <Link
+                    to="/seller/settings"
                     onClick={() => setProfileDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-neutral-700 hover:bg-neutral-50 transition-colors font-bold"
                   >
                     <Settings size={16} className="text-neutral-400" />
                     Portal Settings
                   </Link>
-                  <Link 
-                    to="/seller/help" 
+                  <Link
+                    to="/seller/help"
                     onClick={() => setProfileDropdownOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-neutral-700 hover:bg-neutral-50 transition-colors font-bold border-b border-neutral-50"
                   >
                     <HelpCircle size={16} className="text-neutral-400" />
                     Help & Support
                   </Link>
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="flex w-full items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm text-red-600 hover:bg-red-50 text-left transition-colors font-bold"
                   >
@@ -276,7 +274,7 @@ export default function SellerLayout({ children }) {
 
         {/* Inner Content Area */}
         <main className="flex-grow p-6 lg:p-8 space-y-6">
-          
+
           {/* Breadcrumb Navigation Row */}
           <nav className="flex items-center gap-1.5 text-xs font-bold text-neutral-400 mb-2">
             <Link to="/" className="hover:text-primary transition-colors">Home</Link>
@@ -303,7 +301,7 @@ export default function SellerLayout({ children }) {
         </main>
 
       </div>
-      
+
     </div>
   );
 }

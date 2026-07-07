@@ -197,6 +197,7 @@ export default function SellerRegister() {
           bankAccount: formData.bankAccount,
           routingNumber: formData.routingNumber,
           phone: formData.phone,
+          shopAddress: `${formData.addressLine}, ${formData.city}, ${formData.state} - ${formData.zipCode}`,
           address: {
             address: formData.addressLine,
             city: formData.city,

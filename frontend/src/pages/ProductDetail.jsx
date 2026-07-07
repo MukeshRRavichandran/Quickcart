@@ -18,6 +18,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState('');
   const [cartLoading, setCartLoading] = useState(false);
+  const [stockError, setStockError] = useState('');
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -26,18 +27,10 @@ export default function ProductDetail() {
         const prod = await productsAPI.getById(id);
         setProduct(prod);
         setActiveImage(prod.image);
-        
+
         // Load related products
         const related = await productsAPI.getAll(prod.category);
         setRelatedProducts(related.filter(p => p._id !== prod._id).slice(0, 4));
-        
-        // Find existing cart quantity if any
-        const cartItem = cartItems.find(item => item.product && item.product._id === prod._id);
-        if (cartItem) {
-          setQuantity(cartItem.quantity);
-        } else {
-          setQuantity(1);
-        }
       } catch (error) {
         console.error('Error fetching product details', error);
       } finally {
@@ -45,7 +38,19 @@ export default function ProductDetail() {
       }
     };
     fetchProductDetails();
-  }, [id, cartItems]);
+  }, [id]);
+
+  useEffect(() => {
+    if (product) {
+      // Find existing cart quantity if any
+      const cartItem = cartItems.find(item => item.product && item.product._id === product._id);
+      if (cartItem) {
+        setQuantity(cartItem.quantity);
+      } else {
+        setQuantity(1);
+      }
+    }
+  }, [cartItems, product]);
 
   const handleWishlistToggle = async () => {
     if (!product) return;
@@ -58,6 +63,12 @@ export default function ProductDetail() {
 
   const handleAddToCart = async () => {
     if (!product) return;
+    setStockError('');
+    if (quantity > product.stock) {
+      setStockError('Max quantity reached');
+      setTimeout(() => setStockError(''), 3000);
+      return;
+    }
     setCartLoading(true);
     try {
       // If already in cart, update quantity, else add
@@ -107,7 +118,7 @@ export default function ProductDetail() {
   const discountPercent = Math.round(
     ((product.originalPrice - product.price) / product.originalPrice) * 100
   );
-  
+
   const wishlisted = isWishlisted(product._id);
 
   // Mock secondary thumbnails
@@ -117,9 +128,40 @@ export default function ProductDetail() {
     'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=150&auto=format&fit=crop&q=80',
   ];
 
+  const highlights = [
+    { label: 'Brand', value: product.brand || 'Quickcart Fresh' },
+    { label: 'Product Type', value: product.category || 'Produce' },
+    { label: 'Key Features', value: 'Freshly sourced, premium quality, handpicked for you.' },
+    { label: 'Shelf Life', value: '3-5 days' },
+  ];
+
+  const information = [
+    { label: 'Disclaimer', value: 'All images are for representational purposes only. It is advised that you read the batch and manufacturing details, directions for use, allergen information, health and nutritional claims (wherever applicable), and other details mentioned on the label before consuming the product. For combo items, individual prices can be viewed on the page.' },
+  ];
+
+  if (product.seller) {
+    information.push({ label: 'Seller Name', value: product.seller.storeName || product.seller.name });
+
+    if (product.seller.phone || product.seller.email) {
+      const contactInfo = [
+        product.seller.phone ? `Phone: ${product.seller.phone}` : null,
+        product.seller.email ? `Email: ${product.seller.email}` : null
+      ].filter(Boolean).join('\n');
+
+      information.push({ label: 'Customer Care Details', value: `In case of any issue, contact us:\n${contactInfo}` });
+    }
+
+    if (product.seller.shopAddress) {
+      information.push({ label: 'Shop Address', value: product.seller.shopAddress });
+    }
+  } else {
+    information.push({ label: 'Customer Care Details', value: 'In case of any issue, contact us\nE-mail address: support@quickcart.com' });
+    information.push({ label: 'Seller Name', value: 'Quickcart Retail LLP' });
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 fade-in">
-      
+
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-1.5 text-xs text-neutral-400 font-semibold">
         <Link to="/" className="hover:text-primary transition-colors">Shop</Link>
@@ -132,10 +174,10 @@ export default function ProductDetail() {
       </nav>
 
       {/* Main product view */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+
         {/* Left Column: Image and Gallery */}
-        <div className="space-y-4">
+        <div className="space-y-4 lg:sticky lg:top-28">
           <div className="w-full aspect-square bg-white border border-neutral-100 rounded-3xl overflow-hidden shadow-sm flex items-center justify-center p-4">
             <img
               src={activeImage}
@@ -143,15 +185,14 @@ export default function ProductDetail() {
               className="w-full h-full object-contain rounded-2xl"
             />
           </div>
-          
+
           <div className="flex gap-3 justify-center">
             {thumbnails.map((thumb, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveImage(thumb)}
-                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 p-0.5 transition-all ${
-                  activeImage === thumb ? 'border-primary' : 'border-neutral-100 hover:border-neutral-300'
-                }`}
+                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 p-0.5 transition-all ${activeImage === thumb ? 'border-primary' : 'border-neutral-100 hover:border-neutral-300'
+                  }`}
               >
                 <img src={thumb} alt="" className="w-full h-full object-cover rounded-lg" />
               </button>
@@ -160,110 +201,162 @@ export default function ProductDetail() {
         </div>
 
         {/* Right Column: Product details */}
-        <div className="space-y-6 text-left">
-          
-          {/* Tag */}
-          <div className="flex flex-wrap gap-2">
-            <span className="bg-primary-light text-primary font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider">
-              Certified Organic
-            </span>
-            {discountPercent > 0 && (
-              <span className="bg-accent-light text-accent font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider">
-                {discountPercent}% OFF
-              </span>
-            )}
-          </div>
+        <div className="space-y-8 text-left">
 
-          {/* Title */}
-          <div className="space-y-2">
-            <h1 className="font-outfit font-extrabold text-3xl sm:text-4xl text-neutral-800 leading-tight">
-              {product.name}
-            </h1>
-            
-            {/* Star ratings */}
-            <div className="flex items-center gap-2 text-xs text-neutral-500">
-              <div className="flex text-secondary">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill="currentColor" />
-                ))}
+          <div className="space-y-6">
+            {/* Tag */}
+            <div className="flex flex-wrap gap-2">
+              <span className="bg-primary-light text-primary font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider">
+                Certified Organic
+              </span>
+              {discountPercent > 0 && (
+                <span className="bg-accent-light text-accent font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider">
+                  {discountPercent}% OFF
+                </span>
+              )}
+            </div>
+
+            {/* Title */}
+            <div className="space-y-2">
+              <h1 className="font-outfit font-extrabold text-3xl sm:text-4xl text-neutral-800 leading-tight">
+                {product.name}
+              </h1>
+              {product.stock > 0 && product.stock < 5 && (
+                <span className="bg-amber-500 text-white font-bold text-xs px-2 py-1 rounded-md uppercase tracking-wider inline-block mt-2">
+                  Limited Stock
+                </span>
+              )}
+              {product.stock === 0 && (
+                <span className="bg-red-500 text-white font-bold text-xs px-2 py-1 rounded-md uppercase tracking-wider inline-block mt-2">
+                  Out of Stock
+                </span>
+              )}
+
+              {/* Star ratings */}
+              <div className="flex items-center gap-2 text-xs text-neutral-500">
+                <div className="flex text-secondary">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={14} fill="currentColor" />
+                  ))}
+                </div>
+                <span className="font-bold text-neutral-800">{product.rating}</span>
+                <span>({product.reviewsCount} Reviews)</span>
               </div>
-              <span className="font-bold text-neutral-800">{product.rating}</span>
-              <span>({product.reviewsCount} Reviews)</span>
-            </div>
-          </div>
-
-          {/* Pricing */}
-          <div className="py-4 border-t border-b border-neutral-100 flex items-baseline gap-3">
-            <span className="font-outfit font-extrabold text-3xl text-neutral-800">
-              ₹{product.price.toFixed(2)}
-            </span>
-            {product.originalPrice > product.price && (
-              <span className="text-sm text-neutral-400 line-through">
-                ₹{product.originalPrice.toFixed(2)}
-              </span>
-            )}
-            <span className="text-xs text-neutral-400 font-semibold block capitalize ml-2">
-              per {product.unit}
-            </span>
-          </div>
-
-          {/* Quantity Selector and Add Button */}
-          <div className="flex flex-wrap gap-4 items-center">
-            
-            {/* Selector */}
-            <div className="flex items-center bg-neutral-100 rounded-xl p-1.5 border border-neutral-200">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="p-1.5 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
-              >
-                <Minus size={14} />
-              </button>
-              <span className="px-4 font-outfit font-bold text-neutral-800 min-w-[32px] text-center">
-                {quantity}
-              </span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="p-1.5 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
-              >
-                <Plus size={14} />
-              </button>
             </div>
 
-            {/* Add to Basket button */}
-            <button
-              onClick={handleAddToCart}
-              disabled={cartLoading}
-              className="flex-grow sm:flex-grow-0 px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2"
-            >
-              Add to Basket
-            </button>
+            {/* Pricing */}
+            <div className="py-4 border-t border-b border-neutral-100 flex items-baseline gap-3">
+              <span className="font-outfit font-extrabold text-3xl text-neutral-800">
+                ₹{product.price.toFixed(2)}
+              </span>
+              {product.originalPrice > product.price && (
+                <span className="text-sm text-neutral-400 line-through">
+                  ₹{product.originalPrice.toFixed(2)}
+                </span>
+              )}
+              <span className="text-xs text-neutral-400 font-semibold block capitalize ml-2">
+                per {product.unit}
+              </span>
+            </div>
 
-            {/* Wishlist toggle */}
-            <button
-              onClick={handleWishlistToggle}
-              className={`p-3 rounded-xl border transition-colors ${
-                wishlisted
+            {/* Quantity Selector and Add Button */}
+            <div className="flex flex-wrap gap-4 items-center">
+
+              {/* Selector */}
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center bg-neutral-100 rounded-xl p-1.5 border border-neutral-200">
+                  <button
+                    onClick={() => { setStockError(''); setQuantity(Math.max(1, quantity - 1)); }}
+                    className="p-1.5 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <span className="px-4 font-outfit font-bold text-neutral-800 min-w-[32px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => {
+                      if (quantity + 1 > product.stock) {
+                        setStockError('Max quantity reached');
+                        setTimeout(() => setStockError(''), 3000);
+                      } else {
+                        setStockError('');
+                        setQuantity(quantity + 1);
+                      }
+                    }}
+                    className="p-1.5 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+                {stockError ? (
+                  <span className="text-[10px] font-bold text-accent animate-pulse">{stockError}</span>
+                ) : (product.stock - quantity > 0 && product.stock - quantity <= 3) ? (
+                  <span className="text-[10px] font-bold text-amber-500">Only {product.stock - quantity} left!</span>
+                ) : null}
+              </div>
+
+              {/* Add to Basket button */}
+              <button
+                onClick={handleAddToCart}
+                disabled={cartLoading || product.stock === 0}
+                className="flex-grow sm:flex-grow-0 px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2"
+              >
+                {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+              </button>
+
+              {/* Wishlist toggle */}
+              <button
+                onClick={handleWishlistToggle}
+                className={`p-3 rounded-xl border transition-colors ${wishlisted
                   ? 'bg-accent-light border-accent/20 text-accent'
                   : 'bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-400 hover:text-neutral-700'
-              }`}
-            >
-              <Heart size={20} fill={wishlisted ? 'currentColor' : 'none'} />
-            </button>
+                  }`}
+              >
+                <Heart size={20} fill={wishlisted ? 'currentColor' : 'none'} />
+              </button>
+            </div>
+
+            {/* Badges */}
+            <div className="grid grid-cols-3 gap-2.5 pt-4 text-[10px] font-bold text-neutral-600">
+              <div className="flex items-center gap-1.5 p-2 bg-neutral-100/60 border border-neutral-100 rounded-lg justify-center">
+                <ShieldCheck size={14} className="text-primary" />
+                <span>Non-GMO</span>
+              </div>
+              <div className="flex items-center gap-1.5 p-2 bg-neutral-100/60 border border-neutral-100 rounded-lg justify-center">
+                <Sparkles size={14} className="text-primary" />
+                <span>Local Farm</span>
+              </div>
+              <div className="flex items-center gap-1.5 p-2 bg-neutral-100/60 border border-neutral-100 rounded-lg justify-center">
+                <HeartPulse size={14} className="text-primary" />
+                <span>Heart Healthy</span>
+              </div>
+            </div>
           </div>
 
-          {/* Badges */}
-          <div className="grid grid-cols-3 gap-2.5 pt-4 text-[10px] font-bold text-neutral-600">
-            <div className="flex items-center gap-1.5 p-2 bg-neutral-100/60 border border-neutral-100 rounded-lg justify-center">
-              <ShieldCheck size={14} className="text-primary" />
-              <span>Non-GMO</span>
+          {/* Highlights */}
+          <div className="space-y-4 pt-6 border-t border-neutral-100">
+            <h3 className="font-outfit font-extrabold text-lg text-neutral-800">Highlights</h3>
+            <div className="space-y-3 text-sm text-neutral-600">
+              {highlights.map((item, idx) => (
+                <div key={idx} className="flex gap-4 items-start">
+                  <span className="w-1/3 flex-shrink-0 text-neutral-400 font-semibold">{item.label}</span>
+                  <span className="w-2/3 leading-relaxed">{item.value}</span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-1.5 p-2 bg-neutral-100/60 border border-neutral-100 rounded-lg justify-center">
-              <Sparkles size={14} className="text-primary" />
-              <span>Local Farm</span>
-            </div>
-            <div className="flex items-center gap-1.5 p-2 bg-neutral-100/60 border border-neutral-100 rounded-lg justify-center">
-              <HeartPulse size={14} className="text-primary" />
-              <span>Heart Healthy</span>
+          </div>
+
+          {/* Information */}
+          <div className="space-y-4 pt-6 border-t border-neutral-100">
+            <h3 className="font-outfit font-extrabold text-lg text-neutral-800">Information</h3>
+            <div className="space-y-4 text-sm text-neutral-600">
+              {information.map((item, idx) => (
+                <div key={idx} className="flex gap-4 items-start">
+                  <span className="w-1/3 flex-shrink-0 text-neutral-400 font-semibold">{item.label}</span>
+                  <span className="w-2/3 leading-relaxed whitespace-pre-wrap">{item.value}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -271,8 +364,8 @@ export default function ProductDetail() {
       </div>
 
       {/* Description & Nutrition facts block */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-8 border-t border-neutral-100">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-10 border-t border-neutral-100">
+
         {/* Description */}
         <div className="lg:col-span-2 space-y-4 text-left">
           <h3 className="font-outfit font-extrabold text-lg text-neutral-800 border-b border-neutral-50 pb-2">
@@ -359,7 +452,7 @@ export default function ProductDetail() {
               View All Produce &gt;
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map(prod => (
               <ProductCard key={prod._id} product={prod} />

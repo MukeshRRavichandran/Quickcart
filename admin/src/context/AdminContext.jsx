@@ -15,7 +15,6 @@ export const AdminProvider = ({ children }) => {
     { id: 'CAT-005', name: 'Bakery', count: 18, status: 'Active', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=150&auto=format&fit=crop&q=80' },
     { id: 'CAT-006', name: 'Snacks & Biscuits', count: 28, status: 'Active', image: 'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=150&auto=format&fit=crop&q=80' },
     { id: 'CAT-007', name: 'Beverages', count: 35, status: 'Active', image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=150&auto=format&fit=crop&q=80' },
-    { id: 'CAT-008', name: 'Instant, Ready-to-Cook & Ready-to-Eat', count: 15, status: 'Active', image: 'https://images.unsplash.com/photo-1626200419199-391ae4cd7a41?w=150&auto=format&fit=crop&q=80' },
     { id: 'CAT-009', name: 'Meat, Fish & Seafood', count: 22, status: 'Active', image: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=150&auto=format&fit=crop&q=80' },
     { id: 'CAT-010', name: 'Sweets, Chocolates & Desserts', count: 30, status: 'Active', image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=150&auto=format&fit=crop&q=80' }
   ]);
@@ -154,7 +153,7 @@ export const AdminProvider = ({ children }) => {
           products: o.items.map(i => `${i.name} (x${i.quantity})`).join(', '),
           amount: o.total,
           paymentStatus: 'Paid',
-          deliveryStatus: o.status,
+          deliveryStatus: o.status === 'Pending' ? 'New' : o.status,
           orderDate: new Date(o.createdAt).toLocaleDateString('en-US'),
           deliveryPartner: o.courierPartner || ''
         })));

@@ -8,7 +8,6 @@ const CATEGORIES = [
   'Bakery',
   'Snacks & Biscuits',
   'Beverages',
-  'Instant, Ready-to-Cook & Ready-to-Eat',
   'Meat, Fish & Seafood',
   'Sweets, Chocolates & Desserts',
 ];

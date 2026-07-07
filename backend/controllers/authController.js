@@ -18,6 +18,7 @@ const formatUser = (user, token) => ({
   isApproved:    user.isApproved,
   isBlocked:     user.isBlocked,
   phone:         user.phone,
+  shopAddress:   user.shopAddress,
   hours:         user.hours,
   description:   user.description,
   logo:          user.logo,
@@ -33,7 +34,7 @@ const formatUser = (user, token) => ({
 // POST /api/auth/register
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role, storeName, gstin, bankName, bankAccount, routingNumber, phone, address, aadhaarFile, panFile, licenseFile } = req.body;
+    const { name, email, password, role, storeName, gstin, bankName, bankAccount, routingNumber, phone, shopAddress, address, aadhaarFile, panFile, licenseFile } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email and password are required' });
@@ -56,6 +57,7 @@ export const registerUser = async (req, res) => {
       bankAccount: bankAccount || '',
       routingNumber: routingNumber || '',
       phone: phone || '',
+      shopAddress: shopAddress || '',
       address: address || {},
       aadhaarFile: aadhaarFile || '',
       panFile: panFile || '',
@@ -138,7 +140,7 @@ export const updateUserProfile = async (req, res) => {
 
     // Seller-specific fields
     if (user.role === 'seller') {
-      const fields = ['storeName', 'phone', 'hours', 'description', 'logo', 'banner', 'gstin', 'bankName', 'bankAccount', 'routingNumber'];
+      const fields = ['storeName', 'phone', 'shopAddress', 'hours', 'description', 'logo', 'banner', 'gstin', 'bankName', 'bankAccount', 'routingNumber'];
       fields.forEach(f => { if (req.body[f] !== undefined) user[f] = req.body[f]; });
     }
 

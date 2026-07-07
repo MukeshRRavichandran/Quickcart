@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Plus, Minus, ArrowRight, ShieldCheck, HelpCircle, Sparkles, Home } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { productsAPI } from '../services/api';
+import { productsAPI, couponsAPI } from '../services/api';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -23,6 +23,20 @@ export default function Cart() {
   const [promoInput, setPromoInput] = useState('');
   const [promoError, setPromoError] = useState('');
   const [recipeRecs, setRecipeRecs] = useState([]);
+  const [coupons, setCoupons] = useState([]);
+  const [stockErrorId, setStockErrorId] = useState(null);
+
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const data = await couponsAPI.getActive();
+        setCoupons(data);
+      } catch (err) {
+        console.error('Failed to load coupons', err);
+      }
+    };
+    fetchCoupons();
+  }, []);
 
   // Load recipe recommendations (items NOT in the cart)
   useEffect(() => {
@@ -158,23 +172,39 @@ export default function Cart() {
                         <span className="text-[10px] text-neutral-400 block">₹{product.price.toFixed(2)} each</span>
                       </div>
 
-                      {/* Qty selector */}
-                      <div className="flex items-center bg-neutral-100 rounded-xl p-1 border border-neutral-200">
-                        <button
-                          onClick={() => updateQuantity(product._id, quantity - 1)}
-                          className="p-1 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
-                        >
-                          <Minus size={12} />
-                        </button>
-                        <span className="px-3 font-outfit font-bold text-neutral-800 min-w-[24px] text-center">
-                          {quantity}
-                        </span>
-                        <button
-                          onClick={() => updateQuantity(product._id, quantity + 1)}
-                          className="p-1 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
-                        >
-                          <Plus size={12} />
-                        </button>
+                      <div className="flex flex-col gap-1 items-end">
+                        {/* Qty selector */}
+                        <div className="flex items-center bg-neutral-100 rounded-xl p-1 border border-neutral-200">
+                          <button
+                            onClick={() => { setStockErrorId(null); updateQuantity(product._id, quantity - 1); }}
+                            className="p-1 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="px-3 font-outfit font-bold text-neutral-800 min-w-[24px] text-center">
+                            {quantity}
+                          </span>
+                          <button
+                            onClick={() => {
+                              if (quantity + 1 > product.stock) {
+                                setStockErrorId(product._id);
+                                setTimeout(() => setStockErrorId(null), 3000);
+                              } else {
+                                setStockErrorId(null);
+                                updateQuantity(product._id, quantity + 1);
+                              }
+                            }}
+                            className="p-1 bg-white hover:bg-neutral-50 rounded-lg text-neutral-600 shadow-sm transition-colors"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
+                        {/* Dynamic stock messages */}
+                        {stockErrorId === product._id ? (
+                          <span className="text-[10px] font-bold text-accent text-right block animate-pulse">Max quantity reached</span>
+                        ) : (product.stock - quantity > 0 && product.stock - quantity <= 3) ? (
+                          <span className="text-[10px] font-bold text-amber-500 text-right block">Only {product.stock - quantity} left!</span>
+                        ) : null}
                       </div>
 
                       {/* Remove Button */}
@@ -290,6 +320,30 @@ export default function Cart() {
                   </form>
                 )}
                 {promoError && <span className="text-[10px] text-accent font-bold block">{promoError}</span>}
+                
+                {/* Available Coupons List */}
+                {!promoCode && coupons.length > 0 && (
+                  <div className="mt-4 space-y-2 max-h-40 overflow-y-auto pr-1">
+                    <p className="text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-2">Available Coupons</p>
+                    {coupons.map(c => (
+                      <div key={c._id} className="flex justify-between items-center p-2 border border-neutral-100 rounded-lg hover:border-primary/30 transition-colors cursor-pointer bg-neutral-50/50" onClick={() => setPromoInput(c.code)}>
+                        <div>
+                          <span className="font-bold text-xs text-primary block">{c.code}</span>
+                          <span className="text-[10px] font-semibold text-neutral-500 line-clamp-1">{c.name}</span>
+                        </div>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPromoInput(c.code);
+                          }}
+                          className="text-[10px] font-bold text-neutral-600 bg-white border border-neutral-200 px-2.5 py-1 rounded-md hover:border-primary/50 hover:text-primary transition-colors"
+                          >
+                          Select
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Proceed Button */}

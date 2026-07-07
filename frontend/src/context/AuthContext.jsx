@@ -118,22 +118,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Determine active states based on path for backward compatibility
-  const isSellerPath = window.location.pathname.startsWith('/seller/') || window.location.pathname === '/seller';
-  const user = isSellerPath ? sellerUser : customerUser;
-  const isAuthenticated = isSellerPath ? !!sellerUser : !!customerUser;
-  const loading = isSellerPath ? sellerLoading : customerLoading;
-
   return (
     <AuthContext.Provider
       value={{
-        user,
-        loading,
+        user: customerUser,
+        loading: customerLoading,
         error,
         login,
         register,
         logout,
-        isAuthenticated,
+        isAuthenticated: !!customerUser,
         // Explicitly exposed states for dual-auth
         customerUser,
         sellerUser,

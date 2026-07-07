@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Facebook, Twitter, Instagram, Globe } from 'lucide-react';
+import { Mail, Facebook, Twitter, Instagram, Globe, ShoppingCart } from 'lucide-react';
 
 export default function Footer() {
   const handleSubmit = (e) => {
@@ -9,7 +9,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-white border-t border-neutral-100 mt-20">
+    <footer className="bg-primary border-t border-primary-dark mt-20">
       
       {/* Top Banner section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 border-b border-neutral-100">
@@ -17,24 +17,25 @@ export default function Footer() {
         {/* Company Intro */}
         <div className="space-y-4">
           <Link to="/" className="inline-block">
-            <span className="font-outfit font-extrabold text-2xl tracking-tight text-primary">
-              Quick<span className="text-primary-darker">cart</span>
+            <span className="font-outfit font-extrabold text-2xl tracking-tight text-white flex items-center gap-1.5">
+              <ShoppingCart size={28} className="text-white" />
+              Quick<span className="text-primary-light">cart</span>
             </span>
           </Link>
-          <p className="text-neutral-500 text-sm leading-relaxed">
+          <p className="text-primary-light text-sm leading-relaxed">
             Your source for premium organic food, sun-baked goodness delivered from local fields straight to your table.
           </p>
           <div className="flex gap-4 pt-2">
-            <a href="#" className="p-2 text-neutral-400 hover:text-primary hover:bg-neutral-50 rounded-full transition-colors">
+            <a href="#" className="p-2 text-primary-light hover:text-white hover:bg-primary-dark rounded-full transition-colors">
               <Facebook size={18} />
             </a>
-            <a href="#" className="p-2 text-neutral-400 hover:text-primary hover:bg-neutral-50 rounded-full transition-colors">
+            <a href="#" className="p-2 text-primary-light hover:text-white hover:bg-primary-dark rounded-full transition-colors">
               <Twitter size={18} />
             </a>
-            <a href="#" className="p-2 text-neutral-400 hover:text-primary hover:bg-neutral-50 rounded-full transition-colors">
+            <a href="#" className="p-2 text-primary-light hover:text-white hover:bg-primary-dark rounded-full transition-colors">
               <Instagram size={18} />
             </a>
-            <a href="#" className="p-2 text-neutral-400 hover:text-primary hover:bg-neutral-50 rounded-full transition-colors">
+            <a href="#" className="p-2 text-primary-light hover:text-white hover:bg-primary-dark rounded-full transition-colors">
               <Globe size={18} />
             </a>
           </div>
@@ -42,30 +43,30 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div>
-          <h4 className="font-outfit font-bold text-neutral-800 text-sm uppercase tracking-wider mb-4">Sourcing</h4>
+          <h4 className="font-outfit font-bold text-white text-sm uppercase tracking-wider mb-4">Sourcing</h4>
           <ul className="space-y-2.5 text-sm">
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">About Us</Link></li>
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Sustainability</Link></li>
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Farm Partners</Link></li>
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Gift Cards</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">About Us</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Sustainability</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Farm Partners</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Gift Cards</Link></li>
           </ul>
         </div>
 
         {/* Support */}
         <div>
-          <h4 className="font-outfit font-bold text-neutral-800 text-sm uppercase tracking-wider mb-4">Customer Care</h4>
+          <h4 className="font-outfit font-bold text-white text-sm uppercase tracking-wider mb-4">Customer Care</h4>
           <ul className="space-y-2.5 text-sm">
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Shipping Policy</Link></li>
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Returns & Refunds</Link></li>
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Privacy Policy</Link></li>
-            <li><Link to="/shop" className="text-neutral-500 hover:text-primary transition-colors">Contact</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Shipping Policy</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Returns & Refunds</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Privacy Policy</Link></li>
+            <li><Link to="/shop" className="text-primary-light hover:text-white transition-colors">Contact</Link></li>
           </ul>
         </div>
 
         {/* Newsletter / App Download */}
         <div className="space-y-4">
-          <h4 className="font-outfit font-bold text-neutral-800 text-sm uppercase tracking-wider mb-4">Newsletter</h4>
-          <p className="text-neutral-500 text-xs">
+          <h4 className="font-outfit font-bold text-white text-sm uppercase tracking-wider mb-4">Newsletter</h4>
+          <p className="text-primary-light text-xs">
             Get fresh recipes and seasonal deals directly in your inbox.
           </p>
           <form onSubmit={handleSubmit} className="flex gap-2">
@@ -77,7 +78,7 @@ export default function Footer() {
             />
             <button
               type="submit"
-              className="px-4 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold text-sm transition-colors"
+              className="px-4 py-2.5 bg-secondary hover:bg-secondary-dark text-white rounded-lg font-semibold text-sm transition-colors"
             >
               Subscribe
             </button>
@@ -101,13 +102,13 @@ export default function Footer() {
       </div>
 
       {/* Bottom Legal section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center text-xs text-neutral-400 gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center text-xs text-primary-light gap-4 border-t border-primary-dark">
         <div>
           © {new Date().getFullYear()} Quickcart Market. Crafted with fresh energy.
         </div>
         <div className="flex gap-4">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Secure Payments</span>
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Cold-Chain Delivery</span>
+          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-secondary rounded-full"></span> Secure Payments</span>
+          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-secondary rounded-full"></span> Cold-Chain Delivery</span>
         </div>
       </div>
 

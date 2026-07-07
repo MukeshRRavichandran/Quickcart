@@ -2,11 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Truck, CreditCard, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { ordersAPI } from '../services/api';
+import { ordersAPI, couponsAPI } from '../services/api';
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cartItems, subtotal, discount, tax, total, promoCode, clearCart } = useCart();
+  const { cartItems, subtotal, discount, tax, total, promoCode, clearCart, applyPromoCode, removePromoCode } = useCart();
+  const [coupons, setCoupons] = useState([]);
+  const [couponInput, setCouponInput] = useState('');
+  const [couponError, setCouponError] = useState('');
+
+  React.useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const data = await couponsAPI.getActive();
+        setCoupons(data);
+      } catch (err) {
+        console.error('Failed to load coupons', err);
+      }
+    };
+    fetchCoupons();
+  }, []);
 
   // Shipping Address State
   const [address, setAddress] = useState({
@@ -24,6 +39,7 @@ export default function Checkout() {
   const shippingCost = shippingMethod === 'Express Overnight' ? 12.99 : 0.00;
 
   // Card Payment State
+  const [paymentMethod, setPaymentMethod] = useState('Card');
   const [card, setCard] = useState({
     cardholderName: 'Johnathan Doe',
     cardNumber: '',
@@ -47,9 +63,11 @@ export default function Checkout() {
     setError('');
 
     // Basic Validation
-    if (!card.cardNumber || !card.expiryDate || !card.cvv) {
-      setError('Please fill in card details.');
-      return;
+    if (paymentMethod === 'Card') {
+      if (!card.cardNumber || !card.expiryDate || !card.cvv) {
+        setError('Please fill in card details.');
+        return;
+      }
     }
 
     setLoading(true);
@@ -68,7 +86,7 @@ export default function Checkout() {
         items: orderItems,
         shippingAddress: address,
         shippingMethod,
-        paymentMethod: 'Card',
+        paymentMethod,
         subtotal,
         shippingCost,
         tax,
@@ -291,7 +309,7 @@ export default function Checkout() {
                     <span className="text-xs text-neutral-400">Farm-to-door in 24 hours</span>
                   </div>
                 </div>
-                <span className="font-outfit font-bold text-sm text-neutral-800">$12.99</span>
+                <span className="font-outfit font-bold text-sm text-neutral-800">₹12.99</span>
               </label>
             </div>
           </div>
@@ -323,13 +341,28 @@ export default function Checkout() {
 
             <div className="relative flex py-2 items-center">
               <div className="flex-grow border-t border-neutral-100"></div>
-              <span className="flex-shrink mx-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Or Pay with Card</span>
+              <span className="flex-shrink mx-4 text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Select Payment Method</span>
               <div className="flex-grow border-t border-neutral-100"></div>
+            </div>
+
+            <div className="flex gap-4 mb-4">
+              <label className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'Card' ? 'border-primary bg-primary-light/20 text-primary' : 'border-neutral-200 text-neutral-600'}`}>
+                <input type="radio" name="paymentMethod" value="Card" checked={paymentMethod === 'Card'} onChange={(e) => setPaymentMethod(e.target.value)} className="hidden" />
+                <CreditCard size={16} />
+                <span className="font-bold text-xs">Credit Card</span>
+              </label>
+              <label className={`flex-1 flex items-center justify-center gap-2 p-3 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'COD' ? 'border-primary bg-primary-light/20 text-primary' : 'border-neutral-200 text-neutral-600'}`}>
+                <input type="radio" name="paymentMethod" value="COD" checked={paymentMethod === 'COD'} onChange={(e) => setPaymentMethod(e.target.value)} className="hidden" />
+                <Truck size={16} />
+                <span className="font-bold text-xs">Cash on Delivery</span>
+              </label>
             </div>
 
             {/* Credit Card inputs */}
             <form onSubmit={handlePlaceOrder} className="space-y-4 text-xs font-semibold text-neutral-600">
-              <div className="space-y-1">
+              {paymentMethod === 'Card' ? (
+                <>
+                  <div className="space-y-1">
                 <label>Cardholder Name</label>
                 <input
                   type="text"
@@ -392,6 +425,12 @@ export default function Checkout() {
                 />
                 <span className="text-xs font-semibold text-neutral-500">Save this card for future purchases</span>
               </label>
+                </>
+              ) : (
+                <div className="p-4 bg-emerald-50 text-emerald-700 rounded-xl text-center font-bold text-xs border border-emerald-100">
+                  You will pay in cash upon delivery of your order. Please have the exact amount ready if possible.
+                </div>
+              )}
 
               {error && <div className="text-xs text-accent font-bold pt-2">{error}</div>}
 
@@ -433,6 +472,77 @@ export default function Checkout() {
                   </div>
                 );
               })}
+            </div>
+
+            {/* Promo Code Section */}
+            <div className="pt-4 border-t border-neutral-100">
+              <h4 className="font-outfit font-bold text-sm text-neutral-800 mb-3">Promo Code</h4>
+              
+              {promoCode ? (
+                <div className="flex justify-between items-center bg-emerald-50 border border-emerald-100 p-3 rounded-xl">
+                  <div className="flex items-center gap-2 text-emerald-700">
+                    <span className="font-bold text-xs uppercase tracking-wider">{promoCode}</span>
+                    <span className="text-xs font-semibold">applied!</span>
+                  </div>
+                  <button 
+                    onClick={removePromoCode}
+                    className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      placeholder="Enter code" 
+                      value={couponInput}
+                      onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(''); }}
+                      className="flex-grow px-3 py-2 border border-neutral-200 rounded-lg text-sm outline-none focus:border-primary/50 transition-colors font-semibold"
+                    />
+                    <button 
+                      onClick={async () => {
+                        if (!couponInput) return;
+                        try {
+                          const success = await applyPromoCode(couponInput);
+                          if (!success) setCouponError('Invalid or expired coupon');
+                        } catch (err) {
+                          setCouponError(err.message || 'Failed to apply coupon');
+                        }
+                      }}
+                      className="px-4 py-2 bg-neutral-900 text-white rounded-lg text-xs font-bold hover:bg-neutral-800 transition-colors"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {couponError && <p className="text-xs text-red-500 font-semibold">{couponError}</p>}
+                  
+                  {/* Available Coupons List */}
+                  {coupons.length > 0 && (
+                    <div className="mt-4 space-y-2 max-h-40 overflow-y-auto pr-1">
+                      <p className="text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-2">Available Coupons</p>
+                      {coupons.map(c => (
+                        <div key={c._id} className="flex justify-between items-center p-2 border border-neutral-100 rounded-lg hover:border-primary/30 transition-colors cursor-pointer bg-neutral-50/50" onClick={() => setCouponInput(c.code)}>
+                          <div>
+                            <span className="font-bold text-xs text-primary block">{c.code}</span>
+                            <span className="text-[10px] font-semibold text-neutral-500 line-clamp-1">{c.name}</span>
+                          </div>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCouponInput(c.code);
+                            }}
+                            className="text-[10px] font-bold text-neutral-600 bg-white border border-neutral-200 px-2.5 py-1 rounded-md hover:border-primary/50 hover:text-primary transition-colors"
+                          >
+                            Select
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Financial Calculations */}

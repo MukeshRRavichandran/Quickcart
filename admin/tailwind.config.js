@@ -8,10 +8,10 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#10B981', // Fresh green
-          light: '#E6F7F0',
-          dark: '#059669',
-          darker: '#047857'
+          DEFAULT: '#204230', 
+          light: '#EAF0EC',
+          dark: '#163223',
+          darker: '#0F2418'
         },
         accent: {
           DEFAULT: '#EF4444', // Red alerts / notifications
@@ -19,9 +19,9 @@ export default {
           dark: '#DC2626'
         },
         secondary: {
-          DEFAULT: '#F59E0B', // Amber stars
-          light: '#FEF3C7',
-          dark: '#D97706'
+          DEFAULT: '#DE9E48', 
+          light: '#FDF2E2',
+          dark: '#C58532'
         }
       },
       fontFamily: {
