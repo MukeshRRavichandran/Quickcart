@@ -77,6 +77,10 @@ export const productsAPI = {
     return apiRequest(`/products${query}`);
   },
   getById: (id) => apiRequest(`/products/${id}`),
+  notifyRestock: (id, email) => apiRequest(`/products/${id}/notify`, { 
+    method: 'POST',
+    body: JSON.stringify({ email })
+  }),
 };
 
 export const categoriesAPI = {
@@ -148,6 +152,7 @@ export const sellerAPI = {
     body: JSON.stringify({ status }),
   }),
   getEarnings: () => apiRequest('/orders/seller/earnings'),
+  getRestockRequests: () => apiRequest('/products/seller/restock-requests'),
 };
 
 export const adminAPI = {

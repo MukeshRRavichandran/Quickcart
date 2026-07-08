@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Truck, CreditCard, ArrowRight } from 'lucide-react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import { useCart } from '../context/CartContext';
 import { ordersAPI, couponsAPI } from '../services/api';
 
@@ -10,6 +12,12 @@ export default function Checkout() {
   const [coupons, setCoupons] = useState([]);
   const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState('');
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.fromTo(".checkout-step", { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: "power2.out" });
+    gsap.fromTo(".checkout-summary", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.4, ease: "power2.out" });
+  }, { scope: containerRef });
 
   React.useEffect(() => {
     const fetchCoupons = async () => {
@@ -126,7 +134,7 @@ export default function Checkout() {
   const finalTotal = subtotal - discount + tax + shippingCost;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 fade-in">
+    <div ref={containerRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 fade-in">
       
       {/* Progress Stepper */}
       <div className="max-w-xl mx-auto pt-4 pb-8">
@@ -169,7 +177,7 @@ export default function Checkout() {
         <div className="lg:col-span-2 space-y-6 text-left">
           
           {/* 1. Shipping Address */}
-          <div className="bg-white border border-neutral-100 rounded-3xl p-6 space-y-4 shadow-sm">
+          <div className="checkout-step bg-white border border-neutral-100 rounded-3xl p-6 space-y-4 shadow-sm">
             <div className="flex justify-between items-center border-b border-neutral-50 pb-3">
               <h3 className="font-outfit font-extrabold text-base text-neutral-800 flex items-center gap-2">
                 <Truck size={18} className="text-primary" />
@@ -257,7 +265,7 @@ export default function Checkout() {
           </div>
 
           {/* 2. Shipping Method */}
-          <div className="bg-white border border-neutral-100 rounded-3xl p-6 space-y-4 shadow-sm">
+          <div className="checkout-step bg-white border border-neutral-100 rounded-3xl p-6 space-y-4 shadow-sm">
             <h3 className="font-outfit font-extrabold text-base text-neutral-800 border-b border-neutral-50 pb-3 flex items-center gap-2">
               <Truck size={18} className="text-primary" />
               Shipping Method
@@ -315,7 +323,7 @@ export default function Checkout() {
           </div>
 
           {/* 3. Payment Details */}
-          <div className="bg-white border border-neutral-100 rounded-3xl p-6 space-y-5 shadow-sm">
+          <div className="checkout-step bg-white border border-neutral-100 rounded-3xl p-6 space-y-5 shadow-sm">
             <h3 className="font-outfit font-extrabold text-base text-neutral-800 border-b border-neutral-50 pb-3 flex items-center gap-2">
               <CreditCard size={18} className="text-primary" />
               Payment Details
@@ -442,7 +450,7 @@ export default function Checkout() {
         </div>
 
         {/* Right Column: Order Summary */}
-        <div className="space-y-6 text-left">
+        <div className="checkout-summary space-y-6 text-left lg:sticky lg:top-28">
           
           {/* Order Summary box */}
           <div className="bg-white border border-neutral-100 rounded-3xl p-6 space-y-6 shadow-sm">

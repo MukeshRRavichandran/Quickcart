@@ -23,6 +23,7 @@ export const AdminProvider = ({ children }) => {
   const [sellers, setSellers] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [restockRequests, setRestockRequests] = useState([]);
 
   // Payout Settlements & Transaction Ledger
   const [payouts, setPayouts] = useState([
@@ -157,6 +158,9 @@ export const AdminProvider = ({ children }) => {
           orderDate: new Date(o.createdAt).toLocaleDateString('en-US'),
           deliveryPartner: o.courierPartner || ''
         })));
+
+        const allRestockReqs = await apiCall('/admin/restock-requests');
+        setRestockRequests(allRestockReqs);
 
       } catch (err) {
         console.error('Failed to load admin data', err);
@@ -351,6 +355,7 @@ export const AdminProvider = ({ children }) => {
         sellers,
         customers,
         orders,
+        restockRequests,
         payouts,
         deliveryPartners,
         coupons,

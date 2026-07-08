@@ -1,6 +1,7 @@
 import User from '../models/user.js';
 import Product from '../models/product.js';
 import Order from '../models/order.js';
+import RestockRequest from '../models/restockRequest.js';
 import { createNotification } from './notificationController.js';
 
 // GET /api/admin/users
@@ -161,6 +162,62 @@ export const getAdminDashboardStats = async (req, res) => {
     const totalSales = salesResult.length > 0 ? salesResult[0].total : 0;
 
     return res.json({ totalSales, totalUsers, totalProducts, pendingProducts, totalOrders });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// GET /api/admin/restock-requests
+export const getAdminRestockRequests = async (req, res) => {
+  try {
+    const requests = await RestockRequest.aggregate([
+      {
+        $group: {
+          _id: '$product',
+          count: { $sum: 1 },
+          status: { $first: '$status' },
+          lastRequestedAt: { $max: '$createdAt' }
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'productDetails'
+        }
+      },
+      { $unwind: '$productDetails' },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'productDetails.seller',
+          foreignField: '_id',
+          as: 'sellerDetails'
+        }
+      },
+      {
+        $unwind: {
+          path: '$sellerDetails',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      { $sort: { count: -1 } }
+    ]);
+
+    return res.json(requests);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// GET /api/admin/restock-requests/:productId
+export const getAdminRestockRequestsByProduct = async (req, res) => {
+  try {
+    const requests = await RestockRequest.find({ product: req.params.productId })
+      .populate('user', 'name')
+      .sort({ createdAt: -1 });
+    return res.json(requests);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

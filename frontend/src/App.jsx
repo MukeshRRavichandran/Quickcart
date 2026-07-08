@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 
 // Contexts
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -18,6 +20,14 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import ProductListing from './pages/ProductListing';
 import ProductDetail from './pages/ProductDetail';
+import AboutUs from './pages/AboutUs';
+import Sustainability from './pages/Sustainability';
+import FarmPartners from './pages/FarmPartners';
+import GiftCards from './pages/GiftCards';
+import ShippingPolicy from './pages/ShippingPolicy';
+import ReturnsRefunds from './pages/ReturnsRefunds';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Contact from './pages/Contact';
 import Wishlist from './pages/Wishlist';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
@@ -30,6 +40,7 @@ import Dashboard from './pages/seller/Dashboard';
 import Products from './pages/seller/Products';
 import AddEditProduct from './pages/seller/AddEditProduct';
 import Inventory from './pages/seller/Inventory';
+import RestockRequests from './pages/seller/RestockRequests';
 import Orders from './pages/seller/Orders';
 import OrderDetail from './pages/seller/OrderDetail';
 import Customers from './pages/seller/Customers';
@@ -93,6 +104,17 @@ function SellerProtectedRoute({ children }) {
 
 function AppContent() {
   const location = useLocation();
+  const mainRef = useRef(null);
+
+  useGSAP(() => {
+    if (mainRef.current) {
+      gsap.fromTo(mainRef.current, 
+        { opacity: 0, y: 15 }, 
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+      );
+    }
+  }, [location.pathname]);
+
   const isSellerRoute = (location.pathname.startsWith('/seller/') || location.pathname === '/seller') &&
     location.pathname !== '/seller/login';
 
@@ -108,6 +130,7 @@ function AppContent() {
               <Route path="/seller/products/add" element={<AddEditProduct />} />
               <Route path="/seller/products/edit/:id" element={<AddEditProduct />} />
               <Route path="/seller/inventory" element={<Inventory />} />
+              <Route path="/seller/restock-requests" element={<RestockRequests />} />
               <Route path="/seller/orders" element={<Orders />} />
               <Route path="/seller/orders/:id" element={<OrderDetail />} />
               <Route path="/seller/customers" element={<Customers />} />
@@ -135,12 +158,20 @@ function AppContent() {
       <Navbar />
 
       {/* Page Content */}
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main ref={mainRef} className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<ProductListing />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/sustainability" element={<Sustainability />} />
+          <Route path="/farm-partners" element={<FarmPartners />} />
+          <Route path="/gift-cards" element={<GiftCards />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/returns-refunds" element={<ReturnsRefunds />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Auth defaultRole="customer" isRegister={false} />} />
           <Route path="/register" element={<Auth defaultRole="customer" isRegister={true} />} />
           <Route path="/seller/login" element={<Auth defaultRole="seller" isRegister={false} />} />

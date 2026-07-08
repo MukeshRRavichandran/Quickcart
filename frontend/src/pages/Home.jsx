@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, ArrowRight, Truck, ShieldCheck, RefreshCw, Mail, Headset, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Truck, ShieldCheck, RefreshCw, Mail, Headset, CreditCard, ChevronLeft, ChevronRight, Apple, Leaf } from 'lucide-react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { productsAPI, couponsAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
 
@@ -11,6 +14,41 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('BEST SELLERS');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
+    // Hero Elements
+    gsap.fromTo(".hero-badge", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" });
+
+    // Word by word reveal
+    gsap.fromTo(".hero-word", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" });
+
+    gsap.fromTo(".hero-desc", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.4, ease: "power3.out" });
+    gsap.fromTo(".hero-cta", { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, delay: 0.6, ease: "back.out(1.7)", stagger: 0.1 });
+
+    // Background Ken Burns
+    gsap.to(".hero-bg-img", { scale: 1.05, duration: 8, ease: "sine.inOut", repeat: -1, yoyo: true });
+
+    // Floating elements
+    gsap.to(".float-1", { y: -20, rotation: 10, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    gsap.to(".float-2", { y: 25, rotation: -15, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    gsap.to(".float-3", { x: 15, y: -15, rotation: 20, duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+    // ScrollTriggers
+    gsap.utils.toArray(".scroll-section").forEach(section => {
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      });
+    });
+  }, { scope: containerRef });
 
   const heroSlides = [
     {
@@ -113,13 +151,14 @@ export default function Home() {
   ];
 
   return (
-    <div className="space-y-6 fade-in">
+    <div ref={containerRef} className="space-y-6">
 
 
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden rounded-3xl max-w-7xl mx-auto px-6 py-16 md:py-28 lg:px-16 mt-2 flex items-center justify-start min-h-[480px] group">
-        {/* Background Images */}
+      {/* Hero Section - Broken out of container to be full width */}
+      <section className="hero-section relative overflow-hidden w-[100vw] left-[50%] -translate-x-[50%] pt-16 pb-20 md:py-28 px-6 lg:px-16 mt-0 flex items-center justify-start min-h-[500px] group">
+
+        {/* Animated Background Scene */}
         {heroSlides.map((slide, index) => (
           <div
             key={index}
@@ -129,39 +168,44 @@ export default function Home() {
             <img
               src={slide.image}
               alt={slide.titleStart}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center hero-bg-img origin-center"
             />
           </div>
         ))}
 
         {/* Content (Overlayed) */}
         <div className="max-w-xl space-y-6 text-left relative z-10 transition-all duration-500 transform translate-y-0">
-          <span className="text-primary font-bold text-xs uppercase tracking-widest bg-primary-light/50 px-3 py-1 rounded-full inline-block backdrop-blur-sm">
+          <span className="hero-badge text-primary font-bold text-xs uppercase tracking-widest bg-primary-light/50 px-3 py-1 rounded-full inline-block backdrop-blur-sm">
             {heroSlides[currentSlide].badge}
           </span>
-          <h1 className="font-outfit font-extrabold text-4xl sm:text-5xl lg:text-6xl text-neutral-800 leading-tight">
+          <h1 className="hero-title font-outfit font-extrabold text-4xl sm:text-5xl lg:text-6xl text-neutral-800 leading-tight">
             {heroSlides[currentSlide].titleStart} <br />
             <span className="text-primary">{heroSlides[currentSlide].titleHighlight}</span>
           </h1>
-          <p className="text-neutral-700 text-base sm:text-lg leading-relaxed font-medium max-w-md bg-white/40 p-2 rounded-lg backdrop-blur-sm">
+          <p className="hero-desc text-neutral-700 text-base sm:text-lg leading-relaxed font-medium max-w-md bg-white/40 p-2 rounded-lg backdrop-blur-sm">
             {heroSlides[currentSlide].description}
           </p>
 
           <div className="flex gap-3 pt-2">
             <Link
               to="/shop"
-              className="px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-lg flex items-center justify-center gap-2 inline-flex"
+              className="hero-cta px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-lg flex items-center justify-center gap-2 inline-flex"
             >
               Order Now <ArrowRight size={16} />
             </Link>
             <button
               onClick={() => document.getElementById('categories-section').scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-3.5 bg-white hover:bg-neutral-50 text-neutral-800 font-bold rounded-xl text-sm transition-all duration-200 shadow-md flex items-center justify-center gap-2 inline-flex"
+              className="hero-cta px-8 py-3.5 bg-white hover:bg-neutral-50 text-neutral-800 font-bold rounded-xl text-sm transition-all duration-200 shadow-md flex items-center justify-center gap-2 inline-flex"
             >
               Categories
             </button>
           </div>
         </div>
+
+        {/* Floating Decor */}
+        <div className="absolute right-[10%] top-[20%] float-1 text-4xl hidden lg:block opacity-80 filter drop-shadow-md">🥬</div>
+        <div className="absolute right-[25%] bottom-[15%] float-2 text-5xl hidden md:block opacity-90 filter drop-shadow-md">🥕</div>
+        <div className="absolute left-[50%] top-[10%] float-3 text-3xl hidden md:block opacity-70 filter drop-shadow-md">🍎</div>
 
         {/* Slider Controls */}
         <button
@@ -190,22 +234,65 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Promotional Banners */}
+      <section className="scroll-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          {/* Banner 1: Healthy Fruits */}
+          <div className="bg-white rounded-lg overflow-hidden flex items-center justify-between p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div className="z-10 w-1/2">
+              <h3 className="font-outfit font-extrabold text-xl text-neutral-800 mb-1">Healthy Fruits</h3>
+              <p className="text-sm text-neutral-700 font-medium mb-4">Save Up to 20% Off</p>
+              <Link to="/shop?category=Fruits%20%26%20Vegetables" className="inline-block px-4 py-2 bg-[#7cb342] hover:bg-[#689f38] text-white text-xs font-bold rounded transition-colors">SHOP NOW</Link>
+            </div>
+            <div className="w-1/2 flex justify-end">
+              <img src="https://i.pinimg.com/736x/52/df/27/52df270aa6617ff23841fcf1a0b6584d.jpg" alt="Fruits" className="h-32 object-contain drop-shadow-md rounded-full mix-blend-multiply" />
+            </div>
+          </div>
+
+          {/* Banner 2: Fresh Vegetables */}
+          <div className="bg-white rounded-lg overflow-hidden flex items-center justify-between p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div className="z-10 w-1/2">
+              <h3 className="font-outfit font-extrabold text-xl text-neutral-800 mb-1">Fresh Vegetables</h3>
+              <p className="text-sm text-neutral-700 font-medium mb-4">Save Up to 20% Off</p>
+              <Link to="/shop?category=Fruits%20%26%20Vegetables" className="inline-block px-4 py-2 bg-[#7cb342] hover:bg-[#689f38] text-white text-xs font-bold rounded transition-colors">SHOP NOW</Link>
+            </div>
+            <div className="w-1/2 flex justify-end">
+              <img src="https://i.pinimg.com/736x/b3/37/2d/b3372d4bd8515bfeb7cfe8fc203fed74.jpg" alt="Vegetables" className="h-32 object-contain drop-shadow-md rounded-full mix-blend-multiply" />
+            </div>
+          </div>
+
+          {/* Banner 3: Nuts & Seeds */}
+          <div className="bg-white rounded-lg overflow-hidden flex items-center justify-between p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div className="z-10 w-1/2">
+              <h3 className="font-outfit font-extrabold text-xl text-neutral-800 mb-1">Nuts & Seeds</h3>
+              <p className="text-sm text-neutral-700 font-medium mb-4">Save Up to 20% Off</p>
+              <Link to="/shop?category=Snacks%20%26%20Biscuits" className="inline-block px-4 py-2 bg-[#7cb342] hover:bg-[#689f38] text-white text-xs font-bold rounded transition-colors">SHOP NOW</Link>
+            </div>
+            <div className="w-1/2 flex justify-end">
+              <img src="https://i.pinimg.com/1200x/1e/1c/e0/1e1ce0832100a122e94cb663a312058c.jpg" alt="Nuts & Seeds" className="h-32 object-contain drop-shadow-md rounded-full mix-blend-multiply" />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* Special Offers (Coupons) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border border-neutral-100 shadow-sm rounded-2xl p-6 md:p-8">
+      <section className="scroll-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-2">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-outfit font-extrabold text-xl text-neutral-800">Special Offers</h3>
           </div>
           {coupons.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {coupons.map((coupon) => (
-                <div key={coupon._id} className="border border-primary/20 bg-primary/5 rounded-2xl p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-primary/10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
-                  <div>
+                <div key={coupon._id} className="bg-white border border-primary/20 rounded-2xl p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-green-200 to-green-50 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                  <div className="relative z-10">
                     <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-full mb-3 uppercase tracking-wider">{coupon.code}</span>
                     <h4 className="font-outfit font-extrabold text-lg text-neutral-800">{coupon.name}</h4>
                     <p className="text-sm text-neutral-600 font-medium mt-1">
-                      {coupon.type === 'Percentage' ? `${coupon.value}% OFF` : `₹${coupon.value} OFF`} 
+                      {coupon.type === 'Percentage' ? `${coupon.value}% OFF` : `₹${coupon.value} OFF`}
                       {coupon.minOrderValue > 0 && ` on orders above ₹${coupon.minOrderValue}`}
                     </p>
                   </div>
@@ -223,7 +310,7 @@ export default function Home() {
       </section>
 
       {/* Popular Picks & Deals */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <section className="scroll-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex justify-between items-end border-b border-neutral-100 pb-4">
           <div>
             <span className="text-primary font-bold text-[10px] uppercase tracking-wider block mb-1">
@@ -257,7 +344,7 @@ export default function Home() {
       </section>
 
       {/* Explore by Category */}
-      <section id="categories-section" className="bg-neutral-100/50 py-12">
+      <section id="categories-section" className="scroll-section py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="text-center">
             <h2 className="font-outfit font-extrabold text-2xl text-neutral-800">
@@ -290,7 +377,7 @@ export default function Home() {
       </section>
 
       {/* Featured Groceries */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <section className="scroll-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-neutral-100 pb-4">
           <h2 className="font-outfit font-extrabold text-2xl text-neutral-800">
             Featured Groceries
@@ -301,8 +388,8 @@ export default function Home() {
                 key={tab}
                 onClick={() => setSelectedTab(tab)}
                 className={`px-4 py-2 rounded-full transition-all duration-200 ${selectedTab === tab
-                    ? 'bg-primary text-white shadow-sm shadow-primary/10'
-                    : 'hover:text-neutral-800'
+                  ? 'bg-primary text-white shadow-sm shadow-primary/10'
+                  : 'hover:text-neutral-800'
                   }`}
               >
                 {tab}
@@ -327,7 +414,7 @@ export default function Home() {
       </section>
 
       {/* Stay Fresh Newsletter Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="scroll-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-primary rounded-3xl px-6 py-12 sm:px-12 flex flex-col md:flex-row justify-between items-center gap-8 shadow-xl shadow-primary/15">
           <div className="text-left max-w-lg space-y-2 text-white">
             <h2 className="font-outfit font-extrabold text-2xl sm:text-3xl leading-tight">

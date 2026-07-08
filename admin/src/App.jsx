@@ -13,6 +13,7 @@ import SellerDetails from './pages/SellerDetails';
 import Customers from './pages/Customers';
 import Orders from './pages/Orders';
 import Inventory from './pages/Inventory';
+import RestockRequests from './pages/RestockRequests';
 import Reviews from './pages/Reviews';
 import Coupons from './pages/Coupons';
 import Analytics from './pages/Analytics';
@@ -66,6 +67,7 @@ function AppContent() {
           <Route path="/admin/orders" element={<Orders />} />
           <Route path="/admin/orders/:id" element={<Orders />} />
           <Route path="/admin/inventory" element={<Inventory />} />
+          <Route path="/admin/restock-requests" element={<RestockRequests />} />
           <Route path="/admin/reviews" element={<Reviews />} />
           <Route path="/admin/coupons" element={<Coupons />} />
           <Route path="/admin/analytics" element={<Analytics />} />

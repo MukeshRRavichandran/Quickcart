@@ -25,6 +25,26 @@ export const protect = async (req, res, next) => {
   }
 };
 
+// ── Optionally Authenticate user ──────────────────────────────────────────
+export const optionalProtect = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decoded.id).select('-password');
+    if (user && !user.isBlocked) {
+      req.user = user;
+    }
+  } catch (err) {
+    // ignore
+  }
+  next();
+};
+
 // ── Require admin or sub-admin ────────────────────────────────────────────────
 export const admin = (req, res, next) => {
   if (req.user && (req.user.role === 'admin' || req.user.role === 'sub-admin')) return next();

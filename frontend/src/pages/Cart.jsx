@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Plus, Minus, ArrowRight, ShieldCheck, HelpCircle, Sparkles, Home } from 'lucide-react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import { useCart } from '../context/CartContext';
 import { productsAPI, couponsAPI } from '../services/api';
 
@@ -25,6 +27,13 @@ export default function Cart() {
   const [recipeRecs, setRecipeRecs] = useState([]);
   const [coupons, setCoupons] = useState([]);
   const [stockErrorId, setStockErrorId] = useState(null);
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.fromTo(".cart-item", { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power2.out" });
+    gsap.fromTo(".cart-summary", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, delay: 0.3, ease: "power2.out" });
+    gsap.fromTo(".recipe-rec", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, delay: 0.5, ease: "power2.out" });
+  }, { scope: containerRef, dependencies: [cartItems.length > 0] });
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -82,7 +91,7 @@ export default function Cart() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 fade-in">
+    <div ref={containerRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 fade-in">
       
       {/* Page Title & Back Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -142,7 +151,7 @@ export default function Cart() {
                 return (
                   <div 
                     key={product._id} 
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-white border border-neutral-100 rounded-2xl shadow-sm hover:border-primary/10 transition-all text-left"
+                    className="cart-item flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-white border border-neutral-100 rounded-2xl shadow-sm hover:border-primary/10 transition-all text-left"
                   >
                     
                     {/* Image and Info */}
@@ -233,7 +242,7 @@ export default function Cart() {
                 {recipeRecs.map(prod => (
                   <div 
                     key={prod._id}
-                    className="flex gap-4 p-4 bg-white border border-neutral-100 rounded-2xl shadow-sm items-center hover:border-primary/10 transition-all"
+                    className="recipe-rec flex gap-4 p-4 bg-white border border-neutral-100 rounded-2xl shadow-sm items-center hover:border-primary/10 transition-all"
                   >
                     <div className="w-16 h-16 bg-neutral-50 rounded-xl overflow-hidden p-1.5 flex-shrink-0 flex items-center justify-center">
                       <img src={prod.image} alt={prod.name} className="max-h-full max-w-full object-contain rounded-lg" />
@@ -256,7 +265,7 @@ export default function Cart() {
           </div>
 
           {/* Right Column: Order Summary Card */}
-          <div className="space-y-6 text-left">
+          <div className="cart-summary space-y-6 text-left lg:sticky lg:top-28">
             <div className="bg-white border border-neutral-100 rounded-3xl p-6 space-y-6 shadow-sm">
               <h3 className="font-outfit font-extrabold text-lg text-neutral-800 border-b border-neutral-50 pb-3">
                 Order Summary

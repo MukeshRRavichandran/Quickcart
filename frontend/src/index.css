@@ -4,21 +4,21 @@
 
 @layer base {
   body {
-    @apply bg-[#E4EB9C] text-neutral-800 font-sans;
+    @apply bg-[#98d973] text-neutral-800 font-sans;
   }
-  
-  button, 
+
+  button,
   .btn,
   input[type="submit"] {
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  
+
   button:hover:not(:disabled),
   .btn:hover:not(:disabled),
   input[type="submit"]:hover:not(:disabled) {
     transform: translateY(-1.5px) scale(1.015);
   }
-  
+
   button:active:not(:disabled),
   .btn:active:not(:disabled),
   input[type="submit"]:active:not(:disabled) {
@@ -72,6 +72,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -86,6 +87,7 @@
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -95,6 +97,7 @@
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -106,6 +109,7 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
+
 @keyframes shimmer {
   to {
     background-position: -200% 0;
@@ -115,11 +119,13 @@
 .slide-up {
   animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 @keyframes slideUp {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -129,6 +135,7 @@
 .hover-lift {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .hover-lift:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
@@ -137,6 +144,7 @@
 .hover-scale {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .hover-scale:hover {
   transform: scale(1.03);
 }
@@ -144,7 +152,7 @@
 .btn-glow {
   transition: all 0.2s ease-out;
 }
+
 .btn-glow:hover {
   box-shadow: 0 8px 20px -8px rgba(16, 185, 129, 0.45);
 }
-

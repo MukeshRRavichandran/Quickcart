@@ -1,4 +1,6 @@
 import Product from '../models/product.js';
+import RestockRequest from '../models/restockRequest.js';
+import Notification from '../models/notification.js';
 
 // GET /api/products  (public — customers browse)
 export const getProducts = async (req, res) => {
@@ -102,6 +104,8 @@ export const updateSellerProduct = async (req, res) => {
     }
     if (isFeatured === false) finalTags = finalTags.filter(t => t !== 'Bestseller' && t !== 'Fresh Pick');
 
+    const oldStock = product.stock;
+
     if (name !== undefined) product.name = name;
     if (description !== undefined) product.description = description;
     if (price !== undefined) product.price = Number(price);
@@ -116,6 +120,32 @@ export const updateSellerProduct = async (req, res) => {
     product.tags = finalTags;
 
     const updated = await product.save();
+
+    // Trigger restock notifications if stock went from 0 to > 0
+    if (oldStock === 0 && updated.stock > 0) {
+      const pendingRequests = await RestockRequest.find({ product: updated._id, status: 'pending' });
+      if (pendingRequests.length > 0) {
+        // Filter those with a user account to send in-app notifications
+        const withUser = pendingRequests.filter(req => req.user);
+        if (withUser.length > 0) {
+          const notifications = withUser.map(req => ({
+            user: req.user,
+            text: `Good news! ${updated.name} is back in stock. Hurry and order before it runs out again!`,
+            type: 'stock',
+            read: false
+          }));
+          await Notification.insertMany(notifications);
+        }
+        
+        // Update all requests to notified and append to history
+        for (let req of pendingRequests) {
+          req.status = 'notified';
+          req.history.push({ status: 'notified', date: new Date() });
+          await req.save();
+        }
+      }
+    }
+
     return res.json(updated);
   } catch (err) {
     return res.status(400).json({ message: err.message });
@@ -135,6 +165,79 @@ export const deleteSellerProduct = async (req, res) => {
 
     await product.deleteOne();
     return res.json({ message: 'Product removed successfully' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// POST /api/products/:id/notify (customer requests restock notification)
+export const requestRestockNotification = async (req, res) => {
+  try {
+    const { email } = req.body;
+    let finalEmail = email;
+
+    if (req.user) {
+      finalEmail = req.user.email;
+    }
+
+    if (!finalEmail) {
+      return res.status(400).json({ message: 'Email address is required.' });
+    }
+
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    // Check if a pending request already exists for this email and product
+    const existing = await RestockRequest.findOne({
+      email: finalEmail.toLowerCase(),
+      product: product._id,
+      status: 'pending'
+    });
+
+    if (existing) {
+      return res.status(400).json({ message: 'You have already requested a notification for this product.' });
+    }
+
+    await RestockRequest.create({
+      user: req.user ? req.user._id : null,
+      email: finalEmail.toLowerCase(),
+      product: product._id,
+      seller: product.seller,
+      status: 'pending',
+      history: [{ status: 'pending' }]
+    });
+
+    return res.status(201).json({ message: 'We will notify you when this is back in stock!' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// GET /api/products/seller/restock-requests (seller gets aggregated pending restock requests)
+export const getSellerRestockRequests = async (req, res) => {
+  try {
+    const requests = await RestockRequest.aggregate([
+      { $match: { seller: req.user._id, status: 'pending' } },
+      {
+        $group: {
+          _id: '$product',
+          count: { $sum: 1 },
+          users: { $push: '$user' }
+        }
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'productDetails'
+        }
+      },
+      { $unwind: '$productDetails' },
+      { $sort: { count: -1 } }
+    ]);
+
+    return res.json(requests);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

@@ -3,14 +3,14 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, ShoppingBag, Box, ClipboardList, Users,
   Star, Tag, BarChart3, Wallet, MessageSquare, Bell,
-  User, Settings, HelpCircle, LogOut, Menu, X, Search, ChevronDown, CheckCircle, ShoppingCart
+  User, Settings, HelpCircle, LogOut, Menu, X, Search, ChevronDown, CheckCircle, ShoppingCart, Inbox
 } from 'lucide-react';
 import { useSeller } from '../../context/SellerContext';
 import { useAuth } from '../../context/AuthContext';
 
 export default function SellerLayout({ children }) {
   const { logout } = useAuth();
-  const { profile, notifications, messages, orders } = useSeller();
+  const { profile, notifications, messages, orders, restockRequests } = useSeller();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ export default function SellerLayout({ children }) {
   const menuItems = [
     { label: 'Dashboard', path: '/seller/dashboard', icon: LayoutDashboard },
     { label: 'Products', path: '/seller/products', icon: ShoppingBag },
+    { label: 'Restock Requests', path: '/seller/restock-requests', icon: Inbox, badge: restockRequests?.filter(r => !r.isFulfilled).length },
     { label: 'Inventory', path: '/seller/inventory', icon: Box },
     { label: 'Orders', path: '/seller/orders', icon: ClipboardList, badge: orders.filter(o => o.deliveryStatus === 'New' || o.deliveryStatus === 'Processing').length },
     { label: 'Customers', path: '/seller/customers', icon: Users },

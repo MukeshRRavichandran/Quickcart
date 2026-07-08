@@ -5,6 +5,7 @@ import { productsAPI } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/ProductCard';
+import NotifyModal from '../components/NotifyModal';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -19,6 +20,8 @@ export default function ProductDetail() {
   const [activeImage, setActiveImage] = useState('');
   const [cartLoading, setCartLoading] = useState(false);
   const [stockError, setStockError] = useState('');
+  const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
+  const [hasRequestedNotify, setHasRequestedNotify] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -84,6 +87,11 @@ export default function ProductDetail() {
     } finally {
       setCartLoading(false);
     }
+  };
+
+  const handleNotifyMe = async () => {
+    if (!product) return;
+    setIsNotifyModalOpen(true);
   };
 
   if (loading) {
@@ -160,7 +168,8 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 fade-in">
+    <>
+    <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 fade-in ${product.stock <= 0 ? 'opacity-90' : ''}`}>
 
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-1.5 text-xs text-neutral-400 font-semibold">
@@ -296,14 +305,28 @@ export default function ProductDetail() {
                 ) : null}
               </div>
 
-              {/* Add to Basket button */}
-              <button
-                onClick={handleAddToCart}
-                disabled={cartLoading || product.stock === 0}
-                className="flex-grow sm:flex-grow-0 px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2"
-              >
-                {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-              </button>
+              {/* Add to Basket / Notify Me button */}
+              {product.stock === 0 ? (
+                <button
+                  onClick={handleNotifyMe}
+                  disabled={hasRequestedNotify}
+                  className={`flex-grow sm:flex-grow-0 px-8 py-3.5 font-bold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                    hasRequestedNotify 
+                      ? 'bg-neutral-100 text-neutral-400 border border-neutral-200 cursor-not-allowed' 
+                      : 'bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/20'
+                  }`}
+                >
+                  {hasRequestedNotify ? '✓ Notification Requested' : 'Notify Me'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleAddToCart}
+                  disabled={cartLoading}
+                  className="flex-grow sm:flex-grow-0 px-8 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-md shadow-primary/10 hover:shadow-lg flex items-center justify-center gap-2"
+                >
+                  Add to Cart
+                </button>
+              )}
 
               {/* Wishlist toggle */}
               <button
@@ -462,5 +485,14 @@ export default function ProductDetail() {
       )}
 
     </div>
+      {product && (
+        <NotifyModal 
+          product={product} 
+          isOpen={isNotifyModalOpen} 
+          onClose={() => setIsNotifyModalOpen(false)} 
+          onSuccess={() => setHasRequestedNotify(true)}
+        />
+      )}
+    </>
   );
 }

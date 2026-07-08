@@ -4,7 +4,7 @@ import {
   LayoutDashboard, FolderOpen, ShoppingBag, Store, Users,
   ClipboardList, Box, Star, Tag, BarChart3, Wallet, Truck,
   Bell, UserCheck, LayoutTemplate, Settings, User, HelpCircle,
-  LogOut, Menu, X, Search, ChevronDown, CheckCircle, ShoppingCart
+  LogOut, Menu, X, Search, ChevronDown, CheckCircle, ShoppingCart, RefreshCcw
 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
 
@@ -25,6 +25,7 @@ export default function AdminLayout({ children }) {
     { label: 'Customers', path: '/admin/customers', icon: Users },
     { label: 'Orders', path: '/admin/orders', icon: ClipboardList },
     { label: 'Inventory', path: '/admin/inventory', icon: Box },
+    { label: 'Restock Requests', path: '/admin/restock-requests', icon: RefreshCcw },
     { label: 'Reviews', path: '/admin/reviews', icon: Star },
     { label: 'Coupons & Offers', path: '/admin/coupons', icon: Tag },
     { label: 'Analytics & Reports', path: '/admin/analytics', icon: BarChart3 },

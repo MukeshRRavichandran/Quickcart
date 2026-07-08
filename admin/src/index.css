@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-[#E4EB9C] text-neutral-800 font-sans;
+    @apply bg-[#98d973] text-neutral-800 font-sans;
   }
   
   button, 

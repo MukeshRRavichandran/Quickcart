@@ -147,6 +147,8 @@ export const SellerProvider = ({ children }) => {
     }
   ]);
 
+  const [restockRequests, setRestockRequests] = useState([]);
+
   const { sellerUser: user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -188,6 +190,9 @@ export const SellerProvider = ({ children }) => {
 
           const revs = await reviewsAPI.getSellerReviews();
           setReviews(revs);
+
+          const requests = await sellerAPI.getRestockRequests();
+          setRestockRequests(requests);
 
           const notifs = await notificationsAPI.getAll();
           setNotifications(notifs.map(n => ({
@@ -377,6 +382,7 @@ export const SellerProvider = ({ children }) => {
         offers,
         messages,
         notifications,
+        restockRequests,
         addProduct,
         editProduct,
         deleteProduct,

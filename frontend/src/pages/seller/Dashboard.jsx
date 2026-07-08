@@ -109,8 +109,8 @@ export default function Dashboard() {
             <svg viewBox="0 0 600 200" className="w-full h-44 overflow-visible">
               <defs>
                 <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="#36641b" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#36641b" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
               {/* Horizontal Gridlines */}
@@ -128,20 +128,20 @@ export default function Dashboard() {
               <path 
                 d="M 20 120 C 100 130, 140 70, 200 90 C 260 110, 300 40, 360 80 C 420 120, 480 80, 580 50" 
                 fill="none" 
-                stroke="#10B981" 
+                stroke="#36641b" 
                 strokeWidth="3" 
                 strokeLinecap="round"
               />
 
               {/* Data Node Points */}
-              <circle cx="20" cy="120" r="4" fill="#ffffff" stroke="#10B981" strokeWidth="2.5" />
-              <circle cx="200" cy="90" r="4" fill="#ffffff" stroke="#10B981" strokeWidth="2.5" />
-              <circle cx="360" cy="80" r="4" fill="#ffffff" stroke="#10B981" strokeWidth="2.5" />
+              <circle cx="20" cy="120" r="4" fill="#ffffff" stroke="#36641b" strokeWidth="2.5" />
+              <circle cx="200" cy="90" r="4" fill="#ffffff" stroke="#36641b" strokeWidth="2.5" />
+              <circle cx="360" cy="80" r="4" fill="#ffffff" stroke="#36641b" strokeWidth="2.5" />
               
               {/* Active Highlight Node with tooltip */}
               <g>
-                <circle cx="200" cy="90" r="6" fill="#10B981" />
-                <circle cx="200" cy="90" r="10" fill="#10B981" fillOpacity="0.2" />
+                <circle cx="200" cy="90" r="6" fill="#36641b" />
+                <circle cx="200" cy="90" r="10" fill="#36641b" fillOpacity="0.2" />
                 
                 {/* Tooltip box */}
                 <rect x="150" y="30" width="100" height="36" rx="6" fill="#1e293b" />
@@ -181,15 +181,15 @@ export default function Dashboard() {
               <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#f1f5f9" strokeWidth="3" />
                 {/* New: 18.8% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#a7f3d0" strokeWidth="3.2" strokeDasharray="18.8 81.2" strokeDashoffset="0" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#d7e0d1" strokeWidth="3.2" strokeDasharray="18.8 81.2" strokeDashoffset="0" />
                 {/* Processing: 25% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#6ee7b7" strokeWidth="3.2" strokeDasharray="25 75" strokeDashoffset="-18.8" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#afc2a4" strokeWidth="3.2" strokeDasharray="25 75" strokeDashoffset="-18.8" />
                 {/* Packed: 21.9% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#34d399" strokeWidth="3.2" strokeDasharray="21.9 78.1" strokeDashoffset="-43.8" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#86a376" strokeWidth="3.2" strokeDasharray="21.9 78.1" strokeDashoffset="-43.8" />
                 {/* Shipped: 23.4% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#10b981" strokeWidth="3.2" strokeDasharray="23.4 76.6" strokeDashoffset="-65.7" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#5e8349" strokeWidth="3.2" strokeDasharray="23.4 76.6" strokeDashoffset="-65.7" />
                 {/* Delivered: 10.9% */}
-                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#047857" strokeWidth="3.2" strokeDasharray="10.9 89.1" strokeDashoffset="-89.1" />
+                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#36641b" strokeWidth="3.2" strokeDasharray="10.9 89.1" strokeDashoffset="-89.1" />
               </svg>
               {/* Center counter */}
               <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -201,23 +201,23 @@ export default function Dashboard() {
             {/* Donut Legend */}
             <div className="space-y-1.5 text-[9px] sm:text-xs font-semibold text-neutral-500 flex-grow text-left">
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-200" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#d7e0d1]" />
                 <span>New: 24 (18.8%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-300" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#afc2a4]" />
                 <span>Processing: 32 (25.0%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#86a376]" />
                 <span>Packed: 28 (21.9%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#5e8349]" />
                 <span>Shipped: 30 (23.4%)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-700" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#36641b]" />
                 <span>Delivered: 14 (10.9%)</span>
               </div>
             </div>
@@ -344,7 +344,7 @@ export default function Dashboard() {
       </div>
 
       {/* Offers Boost Banner */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 text-white shadow-md relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="bg-gradient-to-r from-[#36641b] to-[#2a4e15] rounded-2xl p-6 text-white shadow-md relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="absolute right-0 bottom-0 top-0 w-1/3 opacity-15 pointer-events-none">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M 0 100 C 30 80, 50 100, 100 0 L 100 100 Z" fill="currentColor" />
@@ -353,11 +353,11 @@ export default function Dashboard() {
         
         <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
           <div className="p-3 bg-white/10 rounded-xl">
-            <Sparkles size={24} className="text-emerald-100" />
+            <Sparkles size={24} className="text-[#d7e0d1]" />
           </div>
           <div className="space-y-1">
             <h3 className="font-outfit font-extrabold text-lg sm:text-xl">Boost your sales with Offers & Discounts!</h3>
-            <p className="text-xs text-emerald-100 max-w-lg leading-relaxed font-semibold">
+            <p className="text-xs text-[#d7e0d1] max-w-lg leading-relaxed font-semibold">
               Create exciting coupons, combo promotions, or flash sale campaigns to attract more customers and grow your business.
             </p>
           </div>
@@ -365,7 +365,7 @@ export default function Dashboard() {
 
         <Link
           to="/seller/offers"
-          className="bg-white hover:bg-emerald-50 text-emerald-700 font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-sm transition-all whitespace-nowrap flex items-center gap-2"
+          className="bg-white hover:bg-neutral-50 text-[#36641b] font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-sm transition-all whitespace-nowrap flex items-center gap-2"
         >
           Create Offer
         </Link>

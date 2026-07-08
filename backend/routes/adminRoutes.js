@@ -9,6 +9,8 @@ import {
   getAdminOrders,
   assignCourier,
   getAdminDashboardStats,
+  getAdminRestockRequests,
+  getAdminRestockRequestsByProduct,
 } from '../controllers/adminController.js';
 import { protect, admin } from '../middleware/auth.js';
 
@@ -27,5 +29,7 @@ router.get('/products',               getAdminProducts);        // GET  /api/adm
 router.put('/products/:id/approve',   approveProduct);          // PUT  /api/admin/products/:id/approve
 router.get('/orders',                 getAdminOrders);          // GET  /api/admin/orders
 router.put('/orders/:id/courier',     assignCourier);           // PUT  /api/admin/orders/:id/courier
+router.get('/restock-requests',       getAdminRestockRequests); // GET /api/admin/restock-requests
+router.get('/restock-requests/:productId', getAdminRestockRequestsByProduct); // GET /api/admin/restock-requests/:productId
 
 export default router;
