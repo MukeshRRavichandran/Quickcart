@@ -140,10 +140,15 @@ export default function Navbar() {
           <div className="flex items-center gap-6 flex-grow max-w-2xl">
             {/* Logo */}
             <Link to="/" ref={logoRef} className="flex items-center flex-shrink-0 gap-2">
-              <span className="font-outfit font-extrabold text-2xl tracking-tight text-white flex items-center gap-1.5">
-                <ShoppingCart size={28} className="text-emerald-300" />
-                Quick<span className="text-emerald-300">cart</span>
-              </span>
+              <ShoppingCart size={28} className="text-emerald-300" />
+              <div className="flex flex-col items-end">
+                <span className="font-outfit font-extrabold text-2xl tracking-tight text-white leading-none">
+                  Quantum
+                </span>
+                <span className="font-outfit font-bold text-xs text-emerald-300 leading-none">
+                  Quick Cart
+                </span>
+              </div>
             </Link>
 
             {/* Search bar */}

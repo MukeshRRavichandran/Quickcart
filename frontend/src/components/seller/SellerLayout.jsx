@@ -70,9 +70,14 @@ export default function SellerLayout({ children }) {
         <div className="h-20 px-6 border-b border-neutral-50 flex items-center justify-between">
           <Link to="/seller/dashboard" className="flex items-center gap-2">
             <ShoppingCart size={24} className="text-primary" />
-            <span className="font-outfit font-extrabold text-lg text-primary">
-              Quick<span className="text-primary-darker">cart</span>
-            </span>
+            <div className="flex flex-col items-end">
+              <span className="font-outfit font-extrabold text-lg text-primary leading-none">
+                Quantum
+              </span>
+              <span className="font-outfit font-bold text-[10px] text-primary-darker leading-none">
+                Quick Cart
+              </span>
+            </div>
             <span className="text-[10px] font-bold bg-neutral-100 text-neutral-500 px-2 py-0.5 rounded-full uppercase tracking-wider">
               Seller Portal
             </span>

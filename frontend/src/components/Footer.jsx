@@ -54,10 +54,17 @@ export default function Footer() {
         {/* Company Intro */}
         <div className="space-y-4">
           <Link to="/" className="inline-block">
-            <span className="font-outfit font-extrabold text-2xl tracking-tight text-white flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5">
               <ShoppingCart size={28} className="text-white" />
-              Quick<span className="text-primary-light">cart</span>
-            </span>
+              <div className="flex flex-col items-end">
+                <span className="font-outfit font-extrabold text-2xl tracking-tight text-white leading-none">
+                  Quantum
+                </span>
+                <span className="font-outfit font-bold text-xs text-primary-light leading-none">
+                  Quick Cart
+                </span>
+              </div>
+            </div>
           </Link>
           <p className="text-primary-light text-sm leading-relaxed">
             Your source for premium organic food, sun-baked goodness delivered from local fields straight to your table.
@@ -141,7 +148,7 @@ export default function Footer() {
       {/* Bottom Legal section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center text-xs text-primary-light gap-4 border-t border-primary-dark">
         <div>
-          © {new Date().getFullYear()} Quickcart Market. Crafted with fresh energy.
+          © {new Date().getFullYear()} Quantum Quick Cart Market. Crafted with fresh energy.
         </div>
         <div className="flex gap-4">
           <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-secondary rounded-full"></span> Secure Payments</span>

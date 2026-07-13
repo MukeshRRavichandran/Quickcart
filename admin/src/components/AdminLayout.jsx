@@ -72,9 +72,14 @@ export default function AdminLayout({ children }) {
         <div className="h-20 px-6 border-b border-neutral-50 flex items-center justify-between">
           <Link to="/admin/dashboard" className="flex items-center gap-2">
             <ShoppingCart size={24} className="text-primary" />
-            <span className="font-outfit font-extrabold text-lg text-primary">
-              Quick<span className="text-primary-darker">cart</span>
-            </span>
+            <div className="flex flex-col items-end">
+              <span className="font-outfit font-extrabold text-lg text-primary leading-none">
+                Quantum
+              </span>
+              <span className="font-outfit font-bold text-[10px] text-primary-darker leading-none">
+                Quick Cart
+              </span>
+            </div>
             <span className="text-[10px] font-bold bg-neutral-900 text-white px-2 py-0.5 rounded-full uppercase tracking-wider">
               Admin
             </span>
@@ -124,7 +129,7 @@ export default function AdminLayout({ children }) {
 
         {/* Footer info brand */}
         <div className="p-4 border-t border-neutral-50 text-[10px] text-neutral-400 font-semibold text-center">
-          Quickcart Admin v1.0.0
+          Quantum Quick Cart Admin v1.0.0
         </div>
 
       </aside>

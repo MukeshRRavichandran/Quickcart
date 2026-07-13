@@ -46,8 +46,11 @@ export default function Login() {
             <Shield size={32} />
           </div>
           <div>
-            <h1 className="font-extrabold text-2xl text-neutral-800 tracking-tight">Quickcart</h1>
-            <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest mt-0.5">Control Deck Authorization</p>
+            <div className="flex flex-col items-end">
+              <h1 className="font-extrabold text-2xl text-neutral-800 tracking-tight leading-none">Quantum</h1>
+              <h2 className="font-bold text-sm text-neutral-600 tracking-tight leading-none mt-1">Quick Cart</h2>
+            </div>
+            <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest mt-1 text-right">Control Deck Authorization</p>
           </div>
         </div>
 
