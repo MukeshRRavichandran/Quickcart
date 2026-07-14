@@ -59,7 +59,7 @@ export default function SellerDetails() {
     }
     
     // Construct full URL if needed, assuming API URL is standard
-    const fullUrl = url.startsWith('http') ? url : `http://localhost:5000${url}`;
+    const fullUrl = url.startsWith('http') ? url : `http://localhost:5183${url}`;
 
     return (
       <div className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center justify-between shadow-sm">

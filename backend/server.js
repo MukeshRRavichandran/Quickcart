@@ -72,7 +72,7 @@ app.use((err, req, res, next) => {
 });
 
 // ── Start Server ─────────────────────────────────────────────────────────────
-const PORT = parseInt(process.env.PORT || '5000', 10);
+const PORT = parseInt(process.env.PORT || '5183', 10);
 app.listen(PORT, () => {
   console.log(`✅  Server running on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
 });

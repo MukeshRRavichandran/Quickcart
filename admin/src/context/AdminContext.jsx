@@ -61,7 +61,7 @@ export const AdminProvider = ({ children }) => {
   };
 
   const apiCall = async (endpoint, options = {}) => {
-    const url = `http://localhost:5000/api${endpoint}`;
+    const url = `http://localhost:5183/api${endpoint}`;
     const config = {
       ...options,
       headers: {

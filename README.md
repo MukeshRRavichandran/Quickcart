@@ -38,7 +38,7 @@ npm install
 ### 2. Configure Environment Variables
 Create a `.env` file in the root directory (one has been created for you with defaults):
 ```env
-PORT=5000
+PORT=5183
 MONGO_URI=mongodb://localhost:27017/quickcart
 JWT_SECRET=quickcartsecret12345
 NODE_ENV=development
@@ -51,12 +51,12 @@ npm run seed
 ```
 
 ### 4. Run the Application
-To run the server and the React application concurrently (Vite on port 3000, Express on port 5000 with hot-reload):
+To run the server and the React application concurrently (Vite on port 5184, Express on port 5183 with hot-reload):
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:5184](http://localhost:5184) in your browser.
 
 ---
 
