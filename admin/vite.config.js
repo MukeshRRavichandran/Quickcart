@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5185, // Serve admin dashboard on a separate port!
+    port: 5195, // Serve admin dashboard on a separate port!
     host: true
   }
 });
