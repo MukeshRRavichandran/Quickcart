@@ -61,7 +61,8 @@ export const AdminProvider = ({ children }) => {
   };
 
   const apiCall = async (endpoint, options = {}) => {
-    const url = `http://localhost:4555/api${endpoint}`;
+    const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:4555';
+    const url = `${baseURL}/api${endpoint}`;
     const config = {
       ...options,
       headers: {

@@ -59,7 +59,8 @@ export default function SellerDetails() {
     }
     
     // Construct full URL if needed, assuming API URL is standard
-    const fullUrl = url.startsWith('http') ? url : `http://localhost:4555${url}`;
+    const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:4555';
+    const fullUrl = url.startsWith('http') ? url : `${baseURL}${url}`;
 
     return (
       <div className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
